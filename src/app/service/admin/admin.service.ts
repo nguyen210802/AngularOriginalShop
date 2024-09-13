@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {ApiResponse} from "../../app.module";
+import {ApiResponse, PageResponse} from "../../app.module";
 import {UserRequest, UserResponse} from "../module/user.module";
 
 @Injectable({
@@ -17,8 +17,13 @@ export class AdminService {
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
-  getAllUsers() : Observable<ApiResponse<UserResponse[]>>{
-    return this.http.get<any>(`${this.url}/getAll`);
+  getAllUsers(page: number, size: number) : Observable<ApiResponse<PageResponse<UserResponse>>>{
+    return this.http.get<any>(`${this.url}/getAll`, {
+      params: {
+        page: page.toString(),
+        size: size.toString()
+      },
+      headers: this.getHeaders()});
   }
 
   getUser(id : string) : Observable<ApiResponse<UserResponse>>{

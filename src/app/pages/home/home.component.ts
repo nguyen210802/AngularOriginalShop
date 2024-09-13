@@ -3,6 +3,7 @@ import {Router, RouterOutlet} from "@angular/router";
 import {Product} from "../../service/module/user.module";
 import {ProductService} from "../../service/product/product.service";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
+import {AuthService} from "../../service/auth/auth.service";
 
 @Component({
   selector: 'app-home',
@@ -24,22 +25,20 @@ export class HomeComponent {
   totalElements = 0;
   loading = false; // Trạng thái để chỉ định việc đang load thêm sản phẩm
 
-  constructor(private productService: ProductService, private router: Router) {}
+  constructor(private productService: ProductService, protected authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.loadProduct();
   }
 
-  loadProduct(){
-    if(this.loading) return;
+  loadProduct() {
+    if (this.loading) return;
 
     this.loading = true;
 
     this.productService.getAll(this.currentPage, this.pageSize).subscribe({
-      next: (data) =>{
-        console.log("Result: ",data.result); // Kiểm tra toàn bộ result để xem cấu trúc
-        console.log("Data: ",data.result.data); // Kiểm tra xem data là gì
-        // this.products = data.result.data;
+      next: (data) => {
+        console.log("Logined: ", this.authService.isLoggedIn());
         this.products = Array.isArray(data.result.data) ? data.result.data : [data.result.data];
         this.currentPage++;
         this.totalPages = data.result.totalPages;
@@ -67,5 +66,9 @@ export class HomeComponent {
   }
   registerClick(){
     this.router.navigate(['register']);
+  }
+
+  userClick(){
+    this.router.navigate(['user']);
   }
 }

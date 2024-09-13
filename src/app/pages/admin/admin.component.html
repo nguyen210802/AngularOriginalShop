@@ -1,10 +1,10 @@
 
-<div class="container">
-<!--  <button (click)="logoutClick()">Logout</button>-->
+<div class="container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="onScroll()">
+  <button (click)="logoutClick()">Logout</button>
   <table class="table">
     <thead>
     <tr>
-      <th class="text-center">STT</th>
+      <th class="text-center">ID</th>
       <th class="text-center">Username</th>
       <th class="text-center">Email</th>
       <th class="text-center">Create At</th>

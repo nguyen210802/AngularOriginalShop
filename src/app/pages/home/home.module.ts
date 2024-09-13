@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
-import {AdminComponent} from "./admin.component";
-import {AdminUpdateComponent} from "./admin-update/admin-update.component";
-import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import {HomeComponent} from "./home.component";
+import {ProductComponent} from "./product/product.component";
+import {UserComponent} from "../user/user.component";
 
-const routes :Routes = [
+const routes: Routes = [
   {
     path: '',
-    component: AdminComponent
+    component: HomeComponent
   },
   {
-    path: 'update',
-    component: AdminUpdateComponent
+    path: 'product',
+    component: ProductComponent
   },
   {
     path: '**',
@@ -28,4 +28,4 @@ const routes :Routes = [
     RouterModule.forChild(routes)
   ]
 })
-export class AdminModule { }
+export class HomeModule { }

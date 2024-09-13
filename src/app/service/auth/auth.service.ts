@@ -10,7 +10,7 @@ import {ApiResponse} from "../../app.module";
 })
 export class AuthService {
 
-  private url = 'http://localhost:8080/auth/token';
+  private url = 'http://localhost:8080/auth/login';
   constructor(private http: HttpClient, private router: Router) { }
 
   login(request: AuthenticationRequest): Observable<ApiResponse<AuthenticationResponse>>{
@@ -39,7 +39,6 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    console.log("Token: ",localStorage.getItem('token'))
     return !!localStorage.getItem('token');
   }
 }

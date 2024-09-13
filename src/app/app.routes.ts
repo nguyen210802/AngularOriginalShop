@@ -1,15 +1,8 @@
 import { Routes } from '@angular/router';
-// import * as path from "node:path";
-import {AdminComponent} from "./pages/admin/admin.component";
-import {HomeComponent} from "./pages/home/home.component";
 import {LoginComponent} from "./pages/login/login.component";
 import {RegisterComponent} from "./pages/register/register.component";
 
 export const routes: Routes = [
-  {
-    path: '',
-    component: HomeComponent
-  },
   {
     path: 'login',
     component: LoginComponent,
@@ -19,12 +12,20 @@ export const routes: Routes = [
     component: RegisterComponent
   },
   {
+    path: 'user',
+    loadChildren: () => import("./pages/user/user.module").then(m => m.UserModule)
+  },
+  {
     path: 'admin',
     loadChildren: () => import("./pages/admin/admin.module").then(m => m.AdminModule)
   },
   {
+    path: '',
+    loadChildren: () => import("./pages/home/home.module").then(m => m.HomeModule)
+  },
+  {
     path: '**',
-    redirectTo: 'home',
+    redirectTo: '',
     pathMatch: 'full'
   }
 ];
