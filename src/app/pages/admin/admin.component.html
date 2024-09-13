@@ -1,0 +1,45 @@
+
+<div class="container">
+<!--  <button (click)="logoutClick()">Logout</button>-->
+  <table class="table">
+    <thead>
+    <tr>
+      <th class="text-center">STT</th>
+      <th class="text-center">Username</th>
+      <th class="text-center">Email</th>
+      <th class="text-center">Create At</th>
+      <th class="text-center">Update At</th>
+      <th class="text-center">Role</th>
+      <th class="text-center">Action</th>
+    </tr>
+    </thead>
+
+    <tbody *ngFor="let user of users">
+    <tr>
+      <td class="text-center">{{ user.id}}</td>
+      <td class="text-center">{{ user.username}}</td>
+      <td class="text-center">{{ user.email}}</td>
+      <td class="text-center">{{ user.createAt}}</td>
+      <td class="text-center">{{ user.updateAt}}</td>
+      <td class="text-center">{{ user.role}}</td>
+      <div class="d-flex justify-content-between align-items-center">
+        <button type="button" class="btn btn-link text-end">
+          <i class="bi bi-info-circle-fill"></i>
+        </button>
+
+        <button type="button" (click)="updateClick(user.id)" class="btn btn-link text-end">
+          <i class="bi bi-pencil-square"></i>
+        </button>
+
+        <button type="button" (click)="deleteUser(user.id)" class="btn btn-link text-end">
+          <i class="bi bi-trash"></i>
+        </button>
+      </div>
+
+    </tr>
+    </tbody>
+
+  </table>
+
+  <router-outlet/>
+</div>

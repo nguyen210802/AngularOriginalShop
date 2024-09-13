@@ -1,0 +1,23 @@
+<div class="container">
+  <form (ngSubmit)="updateUser()" #userForm="ngForm">
+    <div>
+      <label for="username" class="form-label">Username:</label>
+      <input type="text" class="form-control" id="username" name="username" [(ngModel)]="userRequest.username" [value]="userResponse.username" required #username="ngModel"/>
+    </div>
+
+    <div>
+      <label for="email" class="form-label">Email:</label>
+      <input type="email" class="form-control" id="email" name="email" [(ngModel)]="userRequest.email" [value]="userResponse.email" required #email="ngModel"/>
+    </div>
+
+    <div>
+      <label for="password" class="form-label">Password:</label>
+      <input type="password" class="form-control" id="password" name="password" [(ngModel)]="userRequest.password" required #password="ngModel"/>
+    </div>
+
+    <button type="button" (click)="userHomeClick()">Cancel</button>
+    <button type="submit" [disabled]="userForm.invalid">Update</button>
+  </form>
+
+  <router-outlet/>
+</div>
