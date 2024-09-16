@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Product} from "../module/user.module";
+import {Cart, Product, ProductRequest} from "../module/user.module";
 import {ApiResponse, PageResponse} from "../../app.module";
 
 @Injectable({
@@ -12,6 +12,11 @@ export class ProductService {
 
   constructor(private http : HttpClient) { }
 
+  getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
+
   getAll(page: number, size : number): Observable<ApiResponse<PageResponse<Product>>> {
     return this.http.get<any>(`${this.url}/getAll`, {
       params: {
@@ -19,5 +24,58 @@ export class ProductService {
         size: size.toString()
       }
     });
+  }
+
+  getById(id: string): Observable<ApiResponse<Product>> {
+    return this.http.get<any>(`${this.url}`, {
+      params: {
+        id: id
+      },
+      headers: this.getHeaders()
+    });
+  }
+
+  getMyProduct(page: number, size: number): Observable<ApiResponse<PageResponse<Product>>>{
+    return this.http.get<any>(`${this.url}/myProduct`, {
+      params: {
+        page: page.toString(),
+        size: size.toString()
+      },
+      headers: this.getHeaders()
+    });
+  }
+
+  createProduct(request: ProductRequest): Observable<ApiResponse<Product>>{
+    return this.http.post<any>(`${this.url}/create`, request, { headers: this.getHeaders() });
+    // return this.http.post<any>(`${this.url}/create`, product, { headers: this.getHeaders() });
+  }
+
+  updateProduct(request: ProductRequest): Observable<ApiResponse<Product>>{
+    return this.http.put<any>(`${this.url}/update`, request, { headers: this.getHeaders() });
+  }
+
+  deleteProduct(productId: string): Observable<ApiResponse<String>>{
+    return this.http.delete<any>(`${this.url}/delete`, {
+      params: {
+        productId: productId
+      },
+      headers: this.getHeaders()
+    });
+  }
+
+  addCart(productId: string): Observable<ApiResponse<Cart>>{
+    return this.http.post<any>(`${this.url}/addCart`, {}, {
+      params: {
+        productId: productId
+      },
+      headers: this.getHeaders() });
+  }
+
+  reduceCart(productId: string): Observable<ApiResponse<Cart>>{
+    return this.http.post<any>(`${this.url}/reduceCart`, {}, {
+      params: {
+        productId: productId
+      },
+      headers: this.getHeaders() });
   }
 }

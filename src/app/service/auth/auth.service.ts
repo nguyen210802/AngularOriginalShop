@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {AuthenticationRequest, AuthenticationResponse} from "../module/user.module";
-import {Observable, tap} from "rxjs";
+import {
+  AuthenticationRequest,
+  AuthenticationResponse,
+  IntrospectRequest,
+  IntrospectResponse
+} from "../module/user.module";
+import {Observable, of, tap} from "rxjs";
 import {ApiResponse} from "../../app.module";
 
 @Injectable({
@@ -10,11 +15,18 @@ import {ApiResponse} from "../../app.module";
 })
 export class AuthService {
 
-  private url = 'http://localhost:8080/auth/login';
+  private url = 'http://localhost:8080/auth';
+  introspectRequest: IntrospectRequest = <IntrospectRequest>{};
   constructor(private http: HttpClient, private router: Router) { }
 
+
+  getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
+
   login(request: AuthenticationRequest): Observable<ApiResponse<AuthenticationResponse>>{
-    return this.http.post<any>(this.url, request).pipe(
+    return this.http.post<any>(`${this.url}/login`, request).pipe(
       tap(data => {
         if (data.result.authenticated) {
           localStorage.setItem('token', data.result.token);
@@ -38,7 +50,12 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+  isLoggedIn(): Observable<ApiResponse<IntrospectResponse>>{
+    const token = localStorage.getItem('token');
+    if(!token)
+      this.introspectRequest.token = '';
+    else
+      this.introspectRequest.token = token;
+    return this.http.post<any>(`${this.url}/introspect`, this.introspectRequest);
   }
 }

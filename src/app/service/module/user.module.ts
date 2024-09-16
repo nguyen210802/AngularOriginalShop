@@ -23,6 +23,14 @@ export interface AuthenticationResponse{
   token: string;
 }
 
+export interface IntrospectRequest{
+  token: string;
+}
+
+export interface IntrospectResponse{
+  valid: boolean;
+}
+
 export enum Authenticated{
   USER= 'USER',
   ADMIN = 'ADMIN'
@@ -37,4 +45,57 @@ export interface Product {
   manufacturer?: string;
   price: number;
   comments: Comment[];  // Định nghĩa interface Comment tương tự
+}
+
+export interface ProductRequest{
+  name: string;
+  images: string[];
+  description: string;
+  manufacturer: string;
+  price: number;
+}
+
+export interface ProductImage{
+  id: string;
+  image: ArrayBuffer;
+  product: Product;
+}
+
+export interface Comment {
+  id: string;
+  message: string;
+  product: Product;
+  buyer: UserResponse;
+}
+
+export interface Order{
+  id: string;
+  buyer: UserResponse;
+  orderItems: OrderItem[];
+  totalAmount: bigint,
+  createAt: string,
+  updateAt: string,
+}
+
+export interface OrderItem{
+  id: string;
+  productId: string,
+  productPrice: string,
+  linkProduct: string,
+  quantity:number,
+  price: bigint
+}
+
+export interface CartItem{
+  id: string;
+  cart: Cart;
+  product:Product;
+  quantity: number;
+  price: bigint;
+}
+
+export interface Cart{
+  id: string;
+  buyer: UserResponse;
+  cartItems: CartItem[];
 }

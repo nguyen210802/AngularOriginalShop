@@ -1,0 +1,43 @@
+<div class="container mt-5">
+<!--  <h2>Tải lên và Xem trước Nhiều Hình ảnh</h2>-->
+  <form (ngSubmit)="createProduct()" #productForm="ngForm">
+    <div class="form-group">
+      <label for="name">Tên sản phẩm:</label>
+      <input type="text" class="form-control" id="name" name="name" [(ngModel)]="request.name" required>
+    </div>
+
+    <div class="form-group">
+      <input type="file" (change)="onFilesSelected($event)" class="form-control" accept="image/*" multiple>
+      <div class="row mt-3">
+        @for (image of images; track image.file.name; let i = $index) {
+          <div class="col-md-4 mb-3">
+            <div class="position-relative">
+              <img [src]="image.src" class="img-fluid" [alt]="image.file.name">
+              <button class="btn btn-danger btn-sm position-absolute end-0 top-0 m-2" (click)="removeImage(i)">
+                X
+              </button>
+            </div>
+            <!--        <p class="mt-2">{{ image.file.name }}</p>-->
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="price">Giá sản phẩm:</label>
+      <input type="number" class="form-control" id="price" name="price" [(ngModel)]="request.price" required>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Mô tả sản phẩm:</label>
+      <textarea class="form-control" id="description" name="description" [(ngModel)]="request.description" rows="3" required></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="manufacturer">Nhà sản xuất</label>
+      <input type="text" class="form-control" id="manufacturer" name="description" [(ngModel)]="request.manufacturer" rows="3" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid">Create</button>
+  </form>
+</div>

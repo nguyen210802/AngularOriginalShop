@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
 import {UserComponent} from "./user.component";
-import {MyProductComponent} from "./my-product/my-product.component";
 
 const routes : Routes = [
   {
@@ -10,8 +9,9 @@ const routes : Routes = [
     component: UserComponent
   },
   {
-    path: 'products',
-    component: MyProductComponent
+    path: 'myProducts',
+    // component: MyProductComponent
+    loadChildren: () => import('./my-product/my-product.module').then(m => m.MyProductModule)
   },
   {
     path: '**',
