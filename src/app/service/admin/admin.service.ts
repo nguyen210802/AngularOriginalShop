@@ -27,13 +27,18 @@ export class AdminService {
   }
 
   getUser(id : string) : Observable<ApiResponse<UserResponse>>{
-    return this.http.get<any>(`${this.url}/${id}`, { headers: this.getHeaders() });
+    return this.http.get<any>(`${this.url}`, {
+      params: {
+        id: id
+      },
+      headers: this.getHeaders() });
   }
 
   updateUser( id: string, user: UserRequest): Observable<ApiResponse<UserResponse>> {
     const headers = new HttpHeaders({'Content-Type': 'application/json'});
     const params = new HttpParams().set('id', id);
-    return this.http.put<any>(this.url+ "/update",user, {headers: this.getHeaders(), params});
+    return this.http.put<any>(`${this.url}/update`,user, {
+      headers: this.getHeaders(), params});
   }
 
   deleteUser(id: string) : Observable<ApiResponse<void>>{

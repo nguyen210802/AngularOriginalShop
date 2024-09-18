@@ -29,27 +29,27 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    if(this.authRequest.username == null){
-      this.errorUsername = 'Tai khoan khong duoc trong!';
-      return;
-    }
-    else if( this.authRequest.username.length < 5){
-      this.errorUsername = 'Tên tài khoản phải có ít nhất 5 ký tự';
-      return;
-    }
-    else
-      this.errorUsername = '';
-
-    if(this.authRequest.password == null){
-      this.errorPassword = 'Mật khẩu không duoc trong!';
-      return;
-    }
-    else if(this.authRequest.password.length < 5){
-      this.errorPassword = 'Mật khẩu phải có ít nhất 5 ký tự';
-      return;
-    }
-    else
-      this.errorPassword = '';
+    // if(this.authRequest.username == null){
+    //   this.errorUsername = 'Tai khoan khong duoc trong!';
+    //   return;
+    // }
+    // else if( this.authRequest.username.length < 5){
+    //   this.errorUsername = 'Tên tài khoản phải có ít nhất 5 ký tự';
+    //   return;
+    // }
+    // else
+    //   this.errorUsername = '';
+    //
+    // if(this.authRequest.password == null){
+    //   this.errorPassword = 'Mật khẩu không duoc trong!';
+    //   return;
+    // }
+    // else if(this.authRequest.password.length < 5){
+    //   this.errorPassword = 'Mật khẩu phải có ít nhất 5 ký tự';
+    //   return;
+    // }
+    // else
+    //   this.errorPassword = '';
 
     this.authService.login(this.authRequest).subscribe({
       next: (data) => {

@@ -12,6 +12,10 @@ export class ProductImageService {
   constructor(private http: HttpClient) { }
 
   getProductImages(productId: string): Observable<ApiResponse<ProductImage[]>>{
-    return this.http.get<ApiResponse<any[]>>(`${this.url}/getByProduct`, {params: {productId: productId}});
+    return this.http.get<ApiResponse<any[]>>(`${this.url}/getByProduct/${productId}`);
+  }
+
+  getMainImage(productId: string): Observable<ApiResponse<ProductImage>>{
+    return this.http.get<ApiResponse<any>>(`${this.url}/getMainImage/${productId}`);
   }
 }

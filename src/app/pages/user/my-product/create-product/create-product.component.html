@@ -1,43 +1,92 @@
-<div class="container mt-5">
-<!--  <h2>Tải lên và Xem trước Nhiều Hình ảnh</h2>-->
-  <form (ngSubmit)="createProduct()" #productForm="ngForm">
-    <div class="form-group">
-      <label for="name">Tên sản phẩm:</label>
-      <input type="text" class="form-control" id="name" name="name" [(ngModel)]="request.name" required>
-    </div>
+<!--<div class="container mt-5">-->
+<!--  <form (ngSubmit)="createProduct()" #productForm="ngForm">-->
+<!--    <div class="form-group">-->
+<!--      <label for="name">Tên sản phẩm:</label>-->
+<!--      <input type="text" class="form-control" id="name" name="name" [(ngModel)]="request.name" required>-->
+<!--    </div>-->
 
-    <div class="form-group">
-      <input type="file" (change)="onFilesSelected($event)" class="form-control" accept="image/*" multiple>
-      <div class="row mt-3">
-        @for (image of images; track image.file.name; let i = $index) {
-          <div class="col-md-4 mb-3">
-            <div class="position-relative">
-              <img [src]="image.src" class="img-fluid" [alt]="image.file.name">
-              <button class="btn btn-danger btn-sm position-absolute end-0 top-0 m-2" (click)="removeImage(i)">
+<!--    <div class="form-group mt-3">-->
+<!--      <input type="file" (change)="onFilesSelected($event)" class="form-control" accept="image/*" multiple>-->
+<!--      <div class="row mt-3">-->
+<!--        @for (image of images; track image.file.name; let i = $index) {-->
+<!--          <div class="col-md-4 mb-3">-->
+<!--            <div class="position-relative" style="width: 300px; height: 200px;">-->
+<!--              <img [src]="image.src" class="img-fluid"  style="width: 300px; height: 200px; object-fit: cover" [alt]="image.file.name">-->
+<!--              <button class="btn btn-danger btn-sm position-absolute end-0 top-0 m-2" (click)="removeImage(i)">-->
+<!--                X-->
+<!--              </button>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        }-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    <div class="form-group mt-3">-->
+<!--      <label for="price">Giá sản phẩm:</label>-->
+<!--      <input type="number" class="form-control" id="price" name="price" [(ngModel)]="request.price" required>-->
+<!--    </div>-->
+
+<!--    <div class="form-group mt-3">-->
+<!--      <label for="description">Mô tả sản phẩm:</label>-->
+<!--      <textarea class="form-control" id="description" name="description" [(ngModel)]="request.description" rows="3" required></textarea>-->
+<!--    </div>-->
+
+<!--    <div class="form-group mt-3">-->
+<!--      <label for="manufacturer">Nhà sản xuất</label>-->
+<!--      <input type="text" class="form-control" id="manufacturer" name="description" [(ngModel)]="request.manufacturer" rows="3" required>-->
+<!--    </div>-->
+<!--    <div class="form-group mt-3">-->
+<!--      <button type="submit" class="btn btn-primary float-start" (click)="cancelClick()">Hủy</button>-->
+<!--      <button type="submit" class="btn btn-primary float-end" [disabled]="productForm.invalid">Tạo</button>-->
+<!--    </div>-->
+<!--  </form>-->
+<!--</div>-->
+
+<div class="container">
+  <!-- Create by joker banny -->
+  <div class="h-screen bg-indigo-100 flex justify-center items-center">
+    <div class="lg:w-2/5 md:w-1/2 w-2/3">
+      <form (ngSubmit)="createProduct()" #productForm="ngForm" class="bg-white p-10 rounded-lg shadow-lg min-w-full">
+        <div>
+          <label class="text-gray-800 font-semibold block my-3 text-md"  for="productName">Product Name</label>
+          <input class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" type="text" [(ngModel)]="request.name" name="productName" id="productName" placeholder="username" required/>
+        </div>
+        <div>
+          <label class="text-gray-800 font-semibold block my-3 text-md" for="productImage">Image</label>
+          <input type="file" (change)="onFilesSelected($event)"  accept="image/*" multiple class="block w-full text-sm text-gray-500
+            file:mr-4 file:py-2 file:px-4
+            file:rounded-full file:border-0
+            file:text-sm file:font-semibold
+            file:bg-violet-50 file:text-violet-700
+            hover:file:bg-violet-100" name="productImage" id="productImage"/>
+          <div class="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div *ngFor="let image of images; let i = index" class="relative">
+              <img [src]="image.src" alt="Uploaded image" class="w-full h-48 object-cover rounded-lg"/>
+              <button (click)="removeImage(i)"
+                class="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 focus:outline-none">
                 X
               </button>
             </div>
-            <!--        <p class="mt-2">{{ image.file.name }}</p>-->
           </div>
-        }
-      </div>
-    </div>
+        </div>
+        <div>
+          <label class="text-gray-800 font-semibold block my-3 text-md" for="productPrice">Product Price</label>
+          <input class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" type="text" [(ngModel)]="request.price" name="productPrice" id="productPrice" required/>
+        </div>
+        <div>
+          <label class="text-gray-800 font-semibold block my-3 text-md" for="description">Description</label>
+          <input class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" type="text" [(ngModel)]="request.description" name="description" id="description" required/>
+        </div>
+        <div>
+          <label class="text-gray-800 font-semibold block my-3 text-md" for="manufacturer">Manufacturer</label>
+          <input class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" type="text" [(ngModel)]="request.manufacturer" name="manufacturer" id="manufacturer" required/>
+        </div>
 
-    <div class="form-group">
-      <label for="price">Giá sản phẩm:</label>
-      <input type="number" class="form-control" id="price" name="price" [(ngModel)]="request.price" required>
+        <button type="submit" class="w-full mt-6 bg-indigo-600 rounded-lg px-4 py-2 text-lg text-white tracking-wide font-semibold font-sans" [disabled]="productForm.invalid">Create Product</button>
+        <button type="button" (click)="cancelClick()" class="w-full mt-6 mb-3 bg-indigo-100 rounded-lg px-4 py-2 text-lg text-gray-800 tracking-wide font-semibold font-sans">Cancel</button>
+      </form>
     </div>
+  </div>
 
-    <div class="form-group">
-      <label for="description">Mô tả sản phẩm:</label>
-      <textarea class="form-control" id="description" name="description" [(ngModel)]="request.description" rows="3" required></textarea>
-    </div>
-
-    <div class="form-group">
-      <label for="manufacturer">Nhà sản xuất</label>
-      <input type="text" class="form-control" id="manufacturer" name="description" [(ngModel)]="request.manufacturer" rows="3" required>
-    </div>
-
-    <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid">Create</button>
-  </form>
+  <router-outlet/>
 </div>

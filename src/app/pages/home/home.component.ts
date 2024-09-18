@@ -5,6 +5,7 @@ import {ProductService} from "../../service/product/product.service";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {AuthService} from "../../service/auth/auth.service";
 import {ProductImageService} from "../../service/product-image/product-image.service";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-home',
@@ -13,14 +14,14 @@ import {ProductImageService} from "../../service/product-image/product-image.ser
     RouterOutlet,
     NgForOf,
     NgOptimizedImage,
-    NgIf
+    NgIf,
+    FormsModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
   products: Product[] =[];
-  images: any[] = [];
   currentPage = 1;
   totalPages = 0;
   pageSize = 2;
@@ -34,30 +35,37 @@ export class HomeComponent {
               private router: Router) {}
 
   ngOnInit() {
-    this.loadProduct();
+    this.loadProduct(() => {
+      this.loadImage();
+    });
     this.checkLogined();
   }
 
   checkLogined(){
+    if(!localStorage.getItem('token'))
+    {
+      this.logined = false;
+      return;
+    }
     this.authService.isLoggedIn().subscribe({
       next: (data) => {
-        console.log("login: ", data.result.valid)
         this.logined = data.result.valid;
+        console.log("logined: ", this.logined)
       }
     })
   }
 
-  loadProduct() {
+  loadProduct(callback: () => void) {
     if (this.loading) return;
     this.loading = true;
     this.productService.getAll(this.currentPage, this.pageSize).subscribe({
       next: (data) => {
         this.products = Array.isArray(data.result.data) ? data.result.data : [data.result.data];
-        this.loadImage();
         this.currentPage++;
         this.totalPages = data.result.totalPages;
         this.totalElements = data.result.totalElements;
         this.loading = false;
+        callback();
       },
       error: (error) => {
         console.error('There was an error!', error);
@@ -67,16 +75,19 @@ export class HomeComponent {
 
   loadImage(){
     for(let product of this.products){
-      this.productImageService.getProductImages(product.id).subscribe(
+      this.productImageService.getMainImage(product.id).subscribe(
         (data) => {
-          // console.log("image: ",data.result[0].image);
-          product.image = data.result[0]?.image;
+          product.image = data.result.image;
         },
         error => {
           console.error('Error fetching product images', error);
         }
       );
     }
+  }
+
+  searchProduct(){
+    console.log("Search Product");
   }
 
   loginClick(){

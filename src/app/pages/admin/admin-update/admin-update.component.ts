@@ -22,6 +22,11 @@ export class AdminUpdateComponent {
       this.adminService.getUser(params['id']).subscribe({
         next: (data) => {
           this.userResponse = data.result;
+
+          this.userRequest.username = this.userResponse.username;
+          this.userRequest.email = this.userResponse.email;
+
+          console.log("UserResponse: ", this.userResponse)
         },
         error: (error) => {
           console.error(error);
@@ -31,6 +36,7 @@ export class AdminUpdateComponent {
   }
 
   updateUser(){
+    console.log("UserRequest: ", this.userRequest)
     this.adminService.updateUser(this.userResponse.id, this.userRequest).subscribe({
       next: () => {
         this.userRequest = <UserRequest>{};

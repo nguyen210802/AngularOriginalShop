@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
 import {HomeComponent} from "./home.component";
 import {ProductComponent} from "./product/product.component";
-import {UserComponent} from "../user/user.component";
 
 const routes: Routes = [
   {
@@ -11,7 +10,7 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
-    path: 'product',
+    path: ':productId',
     component: ProductComponent
   },
   {

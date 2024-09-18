@@ -1,23 +1,55 @@
+<!--<div class="container">-->
+<!--  <form (ngSubmit)="updateUser()" #userForm="ngForm">-->
+<!--    <div>-->
+<!--      <label for="username" class="form-label">Username:</label>-->
+<!--      <input type="text" class="form-control" id="username" name="username" [(ngModel)]="userRequest.username" [value]="userResponse.username" required #username="ngModel"/>-->
+<!--    </div>-->
+
+<!--    <div>-->
+<!--      <label for="email" class="form-label">Email:</label>-->
+<!--      <input type="email" class="form-control" id="email" name="email" [(ngModel)]="userRequest.email" [value]="userResponse.email" required #email="ngModel"/>-->
+<!--    </div>-->
+
+<!--    <div>-->
+<!--      <label for="password" class="form-label">Password:</label>-->
+<!--      <input type="password" class="form-control" id="password" name="password" [(ngModel)]="userRequest.password" required #password="ngModel"/>-->
+<!--    </div>-->
+
+<!--    <button type="button" (click)="userHomeClick()">Cancel</button>-->
+<!--    <button type="submit" [disabled]="userForm.invalid">Update</button>-->
+<!--  </form>-->
+
+<!--  <router-outlet/>-->
+<!--</div>-->
+
 <div class="container">
-  <form (ngSubmit)="updateUser()" #userForm="ngForm">
-    <div>
-      <label for="username" class="form-label">Username:</label>
-      <input type="text" class="form-control" id="username" name="username" [(ngModel)]="userRequest.username" [value]="userResponse.username" required #username="ngModel"/>
+  <!-- Create by joker banny -->
+  <div class="h-screen bg-indigo-100 flex justify-center items-center">
+    <div class="lg:w-2/5 md:w-1/2 w-2/3">
+      <form (ngSubmit)="updateUser()" #userForm="ngForm" class="bg-white p-10 rounded-lg shadow-lg min-w-full">
+        <h1 class="text-center text-2xl mb-6 text-gray-600 font-bold font-sans">Formregister</h1>
+        <div>
+          <label class="text-gray-800 font-semibold block my-3 text-md"  for="username">Username</label>
+          <input class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" type="text" [(ngModel)]="userRequest.username" [value]="userResponse.username" name="username" id="username" placeholder="username"/>
+        </div>
+        <div>
+          <label class="text-gray-800 font-semibold block my-3 text-md" for="email">Email</label>
+          <input class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" type="text" [(ngModel)]="userRequest.email" [value]="userResponse.email" name="email" id="email" placeholder="@email"/>
+        </div>
+        <div>
+          <label class="text-gray-800 font-semibold block my-3 text-md" for="password">Password</label>
+          <input class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" type="password" [(ngModel)]="userRequest.password" name="password" id="password" placeholder="password" />
+        </div>
+        <div>
+          <label class="text-gray-800 font-semibold block my-3 text-md" for="confirm">Confirm password</label>
+          <input class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" type="password" name="confirm" id="confirm" placeholder="confirm password" />
+        </div>
+        <button type="submit" class="w-full mt-6 bg-indigo-600 rounded-lg px-4 py-2 text-lg text-white tracking-wide font-semibold font-sans">Update</button>
+        <button type="submit" class="w-full mt-6 mb-3 bg-indigo-100 rounded-lg px-4 py-2 text-lg text-gray-800 tracking-wide font-semibold font-sans">Cancel</button>
+      </form>
     </div>
-
-    <div>
-      <label for="email" class="form-label">Email:</label>
-      <input type="email" class="form-control" id="email" name="email" [(ngModel)]="userRequest.email" [value]="userResponse.email" required #email="ngModel"/>
-    </div>
-
-    <div>
-      <label for="password" class="form-label">Password:</label>
-      <input type="password" class="form-control" id="password" name="password" [(ngModel)]="userRequest.password" required #password="ngModel"/>
-    </div>
-
-    <button type="button" (click)="userHomeClick()">Cancel</button>
-    <button type="submit" [disabled]="userForm.invalid">Update</button>
-  </form>
+  </div>
 
   <router-outlet/>
 </div>
+

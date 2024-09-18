@@ -19,9 +19,8 @@ export class CommentService {
   }
 
   getAllByProduct(productId: string, page: number, size: number) : Observable<ApiResponse<PageResponse<Comment>>>{
-    return this.http.get<any>(`${this.url}/getAllByProduct`, {
+    return this.http.get<any>(`${this.url}/getAllByProduct/${productId}`, {
       params: {
-        productId: productId,
         page: page.toString(),
         size: size.toString()
       },
@@ -29,19 +28,13 @@ export class CommentService {
   }
 
   createComment(productId: string, comment: Comment): Observable<ApiResponse<Comment>>{
-    return this.http.post<any>(`${this.url}/create`, comment, {
-      params: {
-        productId: productId
-      },
+    return this.http.post<any>(`${this.url}/create/${productId}`, comment, {
       headers: this.getHeaders()
     })
   }
 
   deleteComment(commentId: string): Observable<ApiResponse<String>>{
-    return this.http.delete<any>(`${this.url}/delete`, {
-      params: {
-        commentId: commentId
-      },
+    return this.http.delete<any>(`${this.url}/delete/${commentId}`, {
       headers: this.getHeaders()
     })
   }

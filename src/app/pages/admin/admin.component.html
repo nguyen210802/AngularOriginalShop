@@ -1,45 +1,62 @@
+<div>
+  <div>
+    <button (click)="logoutClick()"
+            class="middle none center mr-4 rounded-lg bg-red-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+            data-ripple-light="true">Logout</button>
+  </div>
 
-<div class="container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="onScroll()">
-  <button (click)="logoutClick()">Logout</button>
-  <table class="table">
-    <thead>
-    <tr>
-      <th class="text-center">ID</th>
-      <th class="text-center">Username</th>
-      <th class="text-center">Email</th>
-      <th class="text-center">Create At</th>
-      <th class="text-center">Update At</th>
-      <th class="text-center">Role</th>
-      <th class="text-center">Action</th>
-    </tr>
-    </thead>
+  <!-- component -->
+  <div *ngIf="!loaded" class='flex items-center justify-center min-h-screen'>
+    <div style="border-top-color:transparent" class="w-8 h-8 border-4 border-blue-200 rounded-full animate-spin"></div>
+    <p class="ml-2">cargando...</p>
+  </div>
+  <!-- component -->
+  <div *ngIf="loaded" class="flex flex-col">
+    <div class="overflow-x-auto sm:mx-0.5 lg:mx-0.5">
+      <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+        <div class="overflow-hidden" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="onScroll()">
+          <table class="min-w-full">
+            <thead class="bg-gray-200 border-b">
+              <tr>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">Id</th>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">UserName</th>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">Email</th>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">Role</th>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">Create At</th>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">Update At</th>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">Action</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let user of users">
+              <tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{user.id}}</td>
+                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{user.username}}</td>
+                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{user.email}}</td>
+                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{user.role}}</td>
+                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{user.createAt}}</td>
+                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{user.updateAt}}</td>
+                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <button type="button" class="btn btn-link text-end">
+                      <i class="bi bi-info-circle-fill"></i>
+                    </button>
 
-    <tbody *ngFor="let user of users">
-    <tr>
-      <td class="text-center">{{ user.id}}</td>
-      <td class="text-center">{{ user.username}}</td>
-      <td class="text-center">{{ user.email}}</td>
-      <td class="text-center">{{ user.createAt}}</td>
-      <td class="text-center">{{ user.updateAt}}</td>
-      <td class="text-center">{{ user.role}}</td>
-      <div class="d-flex justify-content-between align-items-center">
-        <button type="button" class="btn btn-link text-end">
-          <i class="bi bi-info-circle-fill"></i>
-        </button>
+                    <button type="button" (click)="updateClick(user.id)" class="btn btn-link text-end">
+                      <i class="bi bi-pencil-square"></i>
+                    </button>
 
-        <button type="button" (click)="updateClick(user.id)" class="btn btn-link text-end">
-          <i class="bi bi-pencil-square"></i>
-        </button>
-
-        <button type="button" (click)="deleteUser(user.id)" class="btn btn-link text-end">
-          <i class="bi bi-trash"></i>
-        </button>
+                    <button type="button" (click)="deleteUser(user.id)" class="btn btn-link text-end">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-
-    </tr>
-    </tbody>
-
-  </table>
+    </div>
+  </div>
 
   <router-outlet/>
 </div>

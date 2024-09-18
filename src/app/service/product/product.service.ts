@@ -26,11 +26,8 @@ export class ProductService {
     });
   }
 
-  getById(id: string): Observable<ApiResponse<Product>> {
-    return this.http.get<any>(`${this.url}`, {
-      params: {
-        id: id
-      },
+  getById(productId: string): Observable<ApiResponse<Product>> {
+    return this.http.get<any>(`${this.url}/${productId}`, {
       headers: this.getHeaders()
     });
   }
@@ -47,35 +44,25 @@ export class ProductService {
 
   createProduct(request: ProductRequest): Observable<ApiResponse<Product>>{
     return this.http.post<any>(`${this.url}/create`, request, { headers: this.getHeaders() });
-    // return this.http.post<any>(`${this.url}/create`, product, { headers: this.getHeaders() });
   }
 
-  updateProduct(request: ProductRequest): Observable<ApiResponse<Product>>{
-    return this.http.put<any>(`${this.url}/update`, request, { headers: this.getHeaders() });
+  updateProduct(productId: string, request: ProductRequest): Observable<ApiResponse<Product>>{
+    return this.http.put<any>(`${this.url}/update/${productId}`, request, { headers: this.getHeaders() });
   }
 
   deleteProduct(productId: string): Observable<ApiResponse<String>>{
-    return this.http.delete<any>(`${this.url}/delete`, {
-      params: {
-        productId: productId
-      },
+    return this.http.delete<any>(`${this.url}/delete/${productId}`, {
       headers: this.getHeaders()
     });
   }
 
   addCart(productId: string): Observable<ApiResponse<Cart>>{
-    return this.http.post<any>(`${this.url}/addCart`, {}, {
-      params: {
-        productId: productId
-      },
+    return this.http.post<any>(`${this.url}/addCart/${productId}`, {}, {
       headers: this.getHeaders() });
   }
 
   reduceCart(productId: string): Observable<ApiResponse<Cart>>{
-    return this.http.post<any>(`${this.url}/reduceCart`, {}, {
-      params: {
-        productId: productId
-      },
+    return this.http.post<any>(`${this.url}/reduceCart/${productId}`, {}, {
       headers: this.getHeaders() });
   }
 }
