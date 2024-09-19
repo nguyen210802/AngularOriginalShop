@@ -80,21 +80,26 @@
         <div class="md:flex-1 px-4">
           <div x-data="{ image: 1 }" x-cloak>
             <div class="h-64 md:h-80 rounded-lg bg-gray-100 mb-4">
-              <div x-show="image === 1" class="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">
-                <span class="text-5xl">1</span>
+
+              <div *ngFor="let image of product.images" class="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">
+                <img alt="ecommerce" class="block h-full w-full object-cover object-center cursor-pointer" *ngIf="image?.image" [src]="'data:image/jpeg;base64,' + image.image.toString()"/>
               </div>
 
-              <div x-show="image === 2" class="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">
-                <span class="text-5xl">2</span>
-              </div>
+<!--              <div x-show="image === 1" class="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">-->
+<!--                <img alt="ecommerce" class="block h-full w-full object-cover object-center cursor-pointer" *ngIf="product?.image" [src]="'data:image/jpeg;base64,' + product.image.toString()"/>-->
+<!--              </div>-->
 
-              <div x-show="image === 3" class="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">
-                <span class="text-5xl">3</span>
-              </div>
+<!--              <div x-show="image === 2" class="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">-->
+<!--                <img alt="ecommerce" class="block h-full w-full object-cover object-center cursor-pointer" *ngIf="product?.image" [src]="'data:image/jpeg;base64,' + product.image.toString()"/>-->
+<!--              </div>-->
 
-              <div x-show="image === 4" class="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">
-                <span class="text-5xl">4</span>
-              </div>
+<!--              <div x-show="image === 3" class="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">-->
+<!--                <span class="text-5xl">3</span>-->
+<!--              </div>-->
+
+<!--              <div x-show="image === 4" class="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">-->
+<!--                <span class="text-5xl">4</span>-->
+<!--              </div>-->
             </div>
 
             <div class="flex -mx-2 mb-4">
@@ -109,14 +114,14 @@
           </div>
         </div>
         <div class="md:flex-1 px-4">
-          <h2 class="mb-2 leading-tight tracking-tight font-bold text-gray-800 text-2xl md:text-3xl">Product Name</h2>
-          <p class="text-gray-500 text-sm">By <a href="#" class="text-indigo-600 hover:underline">Seller</a></p>
+          <h2 class="mb-2 leading-tight tracking-tight font-bold text-gray-800 text-2xl md:text-3xl">{{product.name}}</h2>
+          <p class="text-gray-500 text-sm">By <a  *ngIf="product.seller?.username" class="text-indigo-600 hover:underline">{{product.seller.username}}</a></p>
 
           <div class="flex items-center space-x-4 my-4">
             <div>
               <div class="rounded-lg bg-gray-100 flex py-2 px-3">
                 <span class="text-indigo-400 mr-1 mt-1">VNĐ</span>
-                <span class="font-bold text-indigo-600 text-3xl">25</span>
+                <span class="font-bold text-indigo-600 text-3xl">{{ product.price }}</span>
               </div>
             </div>
             <div class="flex-1">
@@ -125,7 +130,7 @@
             </div>
           </div>
 
-          <p class="text-gray-500">Description</p>
+          <p class="text-gray-500">{{ product.description }}</p>
 
           <div class="flex py-4 space-x-4">
             <div class="relative">
@@ -146,6 +151,35 @@
             <button type="button" (click)="addCart()" class="h-14 px-6 py-2 font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white">
               Add to Cart
             </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global notification live region, render this permanently at the end of the document -->
+  <div *ngIf="isAddCart" aria-live="assertive" class="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6">
+    <div class="flex w-full flex-col items-center space-y-4 sm:items-end">
+      <div class="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+        <div class="p-4">
+          <div class="flex items-start">
+            <div class="flex-shrink-0">
+              <svg class="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div class="ml-3 w-0 flex-1 pt-0.5">
+              <p class="text-sm font-medium text-gray-900">Add Cart Successfully!</p>
+              <p class="mt-1 text-sm text-gray-500">You have successfully added the product to your cart.</p>
+            </div>
+            <div class="ml-4 flex flex-shrink-0">
+              <button (click)="refreshIsAddCart()" type="button" class="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                <span class="sr-only">Close</span>
+                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>

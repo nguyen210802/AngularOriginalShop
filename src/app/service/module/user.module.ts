@@ -40,7 +40,8 @@ export interface Product {
   id: string;
   seller: UserResponse;  // Định nghĩa interface User tương tự
   name: string;
-  image: ArrayBuffer;  // Kiểu dữ liệu để lưu trữ ảnh
+  images: ProductImage[];
+  mainImage: ProductImage;// Kiểu dữ liệu để lưu trữ ảnh
   description?: string;  // Dấu ? để cho phép giá trị này có thể null
   manufacturer?: string;
   price: number;
@@ -58,6 +59,7 @@ export interface ProductRequest{
 export interface ProductImage{
   id: string;
   image: ArrayBuffer;
+  mainImage: boolean;
   product: Product;
 }
 

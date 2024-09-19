@@ -65,4 +65,9 @@ export class ProductService {
     return this.http.post<any>(`${this.url}/reduceCart/${productId}`, {}, {
       headers: this.getHeaders() });
   }
+
+  deleteCart(productId: string): Observable<ApiResponse<Cart>>{
+    return this.http.delete<any>(`${this.url}/deleteCart/${productId}`, {
+      headers: this.getHeaders() });
+  }
 }

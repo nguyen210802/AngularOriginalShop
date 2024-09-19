@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {Router, RouterOutlet} from "@angular/router";
+import {Params, Router, RouterOutlet} from "@angular/router";
 import {Product} from "../../service/module/user.module";
 import {ProductService} from "../../service/product/product.service";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
@@ -36,7 +36,7 @@ export class HomeComponent {
 
   ngOnInit() {
     this.loadProduct(() => {
-      this.loadImage();
+      this.loadMainImages();
     });
     this.checkLogined();
   }
@@ -73,17 +73,20 @@ export class HomeComponent {
     })
   }
 
-  loadImage(){
+  loadMainImages(){
     for(let product of this.products){
-      this.productImageService.getMainImage(product.id).subscribe(
-        (data) => {
-          product.image = data.result.image;
-        },
-        error => {
-          console.error('Error fetching product images', error);
+      product.mainImage = product.images[0];
+      for(let image of product.images){
+        if(image.mainImage){
+          product.mainImage = image;
+          break;
         }
-      );
+      }
     }
+  }
+
+  productClick(productId: string){
+    this.router.navigate([`${productId}`]);
   }
 
   searchProduct(){
@@ -99,5 +102,14 @@ export class HomeComponent {
 
   userClick(){
     this.router.navigate(['user']);
+  }
+
+  orderClick(){
+    console.log("Order Click");
+  }
+
+  logoutClick(){
+    this.authService.logout();
+    this.router.navigate(['login']);
   }
 }

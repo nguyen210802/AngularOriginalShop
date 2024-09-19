@@ -1,5 +1,4 @@
 <div>
-    <!-- Header -->
     <header>
       <h1 class="bg-white py-4 text-center">
         <a href="#" class="text-xl font-bold text-gray-700 cursor-pointer">BUSINESS MODEL CANVAS</a>
@@ -17,7 +16,7 @@
         <div class="-m-4 flex flex-wrap" >
           <div class="w-full p-4 md:w-1/2 lg:w-1/4" *ngFor="let product of products">
               <a class="relative block h-48 overflow-hidden rounded">
-                <img alt="ecommerce" class="block h-full w-full object-cover object-center cursor-pointer" *ngIf="product?.image" [src]="'data:image/jpeg;base64,' + product.image.toString()"/>
+                <img alt="ecommerce" class="block h-full w-full object-cover object-center cursor-pointer" *ngIf="product.mainImage?.image" [src]="'data:image/jpeg;base64,' + product.mainImage.image.toString()"/>
               </a>
               <div class="mt-4">
                 <h2 class="title-font mb-1 text-lg text-gray-900">{{product.name}}</h2>

@@ -58,7 +58,7 @@ export class LoginComponent {
           if(this.authService.checkAuthentication(Authenticated.ADMIN.toString()))
             this.router.navigate(['/admin']);
           else if(this.authService.checkAuthentication(Authenticated.USER.toString()))
-            this.router.navigate(['/home']);
+            this.router.navigate(['']);
         }
         else {
           this.errorMessage = "Tài khoản hoặc mật khẩu không chính xác";

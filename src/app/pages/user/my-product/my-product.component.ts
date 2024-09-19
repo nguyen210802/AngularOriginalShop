@@ -32,7 +32,9 @@ export class MyProductComponent {
               private router: Router) {}
 
   ngOnInit() {
-    this.loadProduct();
+    this.loadProduct(() => {
+      this.loadMainImage();
+    });
     this.checkLogined();
   }
 
@@ -45,35 +47,41 @@ export class MyProductComponent {
     })
   }
 
-  loadProduct() {
+  loadProduct(callBack: () => void) {
     if (this.loading) return;
     this.loading = true;
     this.productService.getMyProduct(this.currentPage, this.pageSize).subscribe({
       next: (data) => {
         this.products = Array.isArray(data.result.data) ? data.result.data : [data.result.data];
-        this.loadImage();
+        console.log("Products: ", this.products)
         this.currentPage++;
         this.totalPages = data.result.totalPages;
         this.totalElements = data.result.totalElements;
         this.loading = false;
+        callBack();
       },
       error: (error) => {
         console.error('There was an error!', error);
+        callBack();
       }
     })
   }
 
-  loadImage(){
+  loadMainImage(){
     for(let product of this.products){
-      this.productImageService.getMainImage(product.id).subscribe(
-        (data) => {
-          // console.log("image: ",data.result[0].image);
-          product.image = data.result?.image;
-        },
-        error => {
-          console.error('Error fetching product images', error);
+      console.log("load For Product");
+      product.mainImage = product.images[0];
+      for(let image of product.images){
+        if(image.mainImage){
+          product.mainImage = image;
+          console.log("MainImage: ",image);
+          console.log("ProductId: ",product.id);
+          break;
         }
-      );
+        else {
+          console.log("Image Else: ", image)
+        }
+      }
     }
   }
 
