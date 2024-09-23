@@ -52,6 +52,32 @@ export class CartComponent {
     }
   }
 
+  addCart(productId: string){
+    this.cartService.addCart(productId).subscribe({
+      next: (data) => {
+        this.loadCart(() => {
+          this.loadMainImage();
+        });
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    })
+  }
+
+  reduceCart(productId: string){
+    this.cartService.reduceCart(productId).subscribe({
+      next: (data) => {
+        this.loadCart(() => {
+          this.loadMainImage();
+        });
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    })
+  }
+
   deleteCart(productId: string){
     this.cartService.deleteCart(productId).subscribe({
       next: (data) => {
