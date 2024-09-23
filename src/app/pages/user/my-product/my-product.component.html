@@ -7,23 +7,37 @@
         <ul class="flex justify-center  items-center space-x-4">
           <li><a href="/user" class="text-md font-semibold text-gray-600 hover:text-gray-800">Home</a></li>
           <li><a href="/user/myProducts/create" class="text-md font-semibold text-gray-600 hover:text-gray-800">Create Product</a></li>
-          <li><a href="" class="text-md font-semibold text-gray-600 hover:text-gray-800">About</a></li>
+<!--          <li><a href="" class="text-md font-semibold text-gray-600 hover:text-gray-800">About</a></li>-->
         </ul>
       </nav>
     </header>
     <section class="min-h-screen body-font text-gray-600 ">
       <div class="container mx-auto px-5 py-10">
         <div class="-m-4 flex flex-wrap" >
-          <div class="w-full p-4 md:w-1/2 lg:w-1/4" *ngFor="let product of products">
-              <a class="relative block h-48 overflow-hidden rounded">
-                <img alt="ecommerce" class="block h-full w-full object-cover object-center cursor-pointer" *ngIf="product.mainImage?.image" [src]="'data:image/jpeg;base64,' + product.mainImage.image.toString()"/>
-              </a>
-              <div class="mt-4">
-                <h2 class="title-font mb-1 text-lg text-gray-900">{{product.name}}</h2>
-                <h3 class="title-font text-lg text-orange-600 font-medium">{{product.price}}</h3>
-                <p class="mt-1">01/09/2022</p>
-              </div>
+          <div class="w-full p-4 md:w-1/2 lg:w-1/4" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="onScroll()" *ngFor="let product of products">
+            <a class="relative block h-48 overflow-hidden rounded">
+              <img alt="ecommerce" class="block h-full w-full object-cover object-center cursor-pointer" *ngIf="product.mainImage?.image" [src]="'data:image/jpeg;base64,' + product.mainImage.image.toString()"/>
+            </a>
+            <div class="mt-4">
+              <h2 class="title-font mb-1 text-lg text-gray-900">{{product.name}}</h2>
+              <h3 class="title-font text-lg text-orange-600 font-medium">{{product.price}}</h3>
+              <p class="mt-1">01/09/2022</p>
             </div>
+            <div class="flex justify-between mt-3">
+              <!-- Button Xem Chi Tiết -->
+<!--              <button class="text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 font-medium rounded-lg text-sm px-4 py-2">-->
+<!--                Detail-->
+<!--              </button>-->
+              <!-- Button Sửa -->
+              <button class="text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-600 font-medium rounded-lg text-sm px-4 py-2">
+                <a href="/user/myProducts/update">Update</a>
+              </button>
+              <!-- Button Xóa -->
+              <button (click)="deleteProduct(product.id)" class="text-white bg-red-500 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 font-medium rounded-lg text-sm px-4 py-2">
+                Delete
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>

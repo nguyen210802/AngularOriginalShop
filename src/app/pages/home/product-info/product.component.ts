@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import {ActivatedRoute, Router, RouterOutlet} from "@angular/router";
+import {ActivatedRoute, RouterOutlet} from "@angular/router";
 import {ProductService} from "../../../service/product/product.service";
 import {Product} from "../../../service/module/user.module";
-import {NgForOf, NgIf} from "@angular/common";
-import {ProductImageService} from "../../../service/product-image/product-image.service";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
+import {CartService} from "../../../service/cart/cart.service";
 
 @Component({
   selector: 'app-product',
@@ -11,7 +11,8 @@ import {ProductImageService} from "../../../service/product-image/product-image.
   imports: [
     RouterOutlet,
     NgIf,
-    NgForOf
+    NgForOf,
+    NgClass
   ],
   templateUrl: './product.component.html',
   styleUrl: './product.component.css'
@@ -19,10 +20,10 @@ import {ProductImageService} from "../../../service/product-image/product-image.
 export class ProductComponent {
   product: Product = <Product>{};
   isAddCart: boolean = false;
+  selectedImage = 0;
   constructor(private productService: ProductService,
-              private router: Router,
               private route: ActivatedRoute,
-              private productImageService: ProductImageService) {}
+              private cartService: CartService) {}
 
   ngOnInit() {
     this.loadProduct(() => {
@@ -49,17 +50,11 @@ export class ProductComponent {
 
   loadMainImage(){
     this.product.mainImage = this.product.images[0];
-    for(let image of this.product.images){
-      if(image.mainImage){
-        this.product.mainImage = image;
-        break;
-      }
-    }
   }
 
   addCart(){
     console.log("Add Cart");
-    this.productService.addCart(this.product.id).subscribe({
+    this.cartService.addCart(this.product.id).subscribe({
       next: (data) => {
         this.isAddCart = true;
         console.log("Add to cart success");

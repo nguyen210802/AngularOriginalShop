@@ -64,7 +64,11 @@ export class AdminComponent {
 
   onScroll() {
     this.loadUsers();
-    console.log("Xin chao");
+  }
+
+  userDetailClick(id: string){
+    const param: Params = {id: id.toString()}
+    this.router.navigate(['admin/detail'], {queryParams: param});
   }
 
   updateClick(id: string){

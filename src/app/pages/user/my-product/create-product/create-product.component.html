@@ -49,7 +49,7 @@
       <form (ngSubmit)="createProduct()" #productForm="ngForm" class="bg-white p-10 rounded-lg shadow-lg min-w-full">
         <div>
           <label class="text-gray-800 font-semibold block my-3 text-md"  for="productName">Product Name</label>
-          <input class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" type="text" [(ngModel)]="request.name" name="productName" id="productName" placeholder="username" required/>
+          <input class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" type="text" [(ngModel)]="request.name" name="productName" id="productName" required/>
         </div>
         <div>
           <label class="text-gray-800 font-semibold block my-3 text-md" for="productImage">Image</label>

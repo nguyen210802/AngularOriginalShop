@@ -3,12 +3,16 @@ import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
 import {AdminComponent} from "./admin.component";
 import {AdminUpdateComponent} from "./admin-update/admin-update.component";
-import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import {UserDetailComponent} from "./user-detail/user-detail.component";
 
 const routes :Routes = [
   {
     path: '',
     component: AdminComponent
+  },
+  {
+    path: 'detail',
+    component: UserDetailComponent
   },
   {
     path: 'update',

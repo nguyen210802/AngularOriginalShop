@@ -1,22 +1,36 @@
 import { Component } from '@angular/core';
 import {AuthService} from "../../service/auth/auth.service";
-import {Router} from "@angular/router";
+import {Router, RouterOutlet} from "@angular/router";
+import {UserService} from "../../service/user/user.service";
+import {UserResponse} from "../../service/module/user.module";
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [],
+  imports: [
+    RouterOutlet
+  ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
 })
 export class UserComponent {
+  userResponse: UserResponse = <UserResponse>{};
+
+  constructor(private authService: AuthService, private userService: UserService, private router: Router) {}
+
   ngOnInit() {
-    if(this.authService.isLoggedIn())
-      return;
-    else {
-      this.router.navigate(['login']);
-    }
+    this.myInfo();
   }
-  constructor(private authService: AuthService, private router: Router) {
+
+  myInfo(){
+    this.userService.getMyInfo().subscribe({
+      next: (data) => {
+        this.userResponse = data.result;
+        console.log("UserResponse: ",this.userResponse);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    })
   }
 }

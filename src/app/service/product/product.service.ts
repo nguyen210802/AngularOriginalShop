@@ -55,19 +55,4 @@ export class ProductService {
       headers: this.getHeaders()
     });
   }
-
-  addCart(productId: string): Observable<ApiResponse<Cart>>{
-    return this.http.post<any>(`${this.url}/addCart/${productId}`, {}, {
-      headers: this.getHeaders() });
-  }
-
-  reduceCart(productId: string): Observable<ApiResponse<Cart>>{
-    return this.http.post<any>(`${this.url}/reduceCart/${productId}`, {}, {
-      headers: this.getHeaders() });
-  }
-
-  deleteCart(productId: string): Observable<ApiResponse<Cart>>{
-    return this.http.delete<any>(`${this.url}/deleteCart/${productId}`, {
-      headers: this.getHeaders() });
-  }
 }

@@ -4,8 +4,7 @@ import {Cart, CartItem} from "../../../service/module/user.module";
 import {UserService} from "../../../service/user/user.service";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
-import {ProductImageService} from "../../../service/product-image/product-image.service";
-import {ProductService} from "../../../service/product/product.service";
+import {CartService} from "../../../service/cart/cart.service";
 
 @Component({
   selector: 'app-cart',
@@ -23,9 +22,9 @@ import {ProductService} from "../../../service/product/product.service";
 export class CartComponent {
   cart: Cart = <Cart>{};
   cartItems: CartItem[] = [];
+  cartItemsChecked: string[] = [];
   constructor(private userService: UserService,
-              private productImageService: ProductImageService,
-              private productService: ProductService) {}
+              private cartService: CartService) {}
   ngOnInit(): void {
     this.loadCart(() => {
       this.loadMainImage();
@@ -50,23 +49,33 @@ export class CartComponent {
   loadMainImage(){
     for(let cartItem of this.cartItems){
       cartItem.product.mainImage = cartItem.product.images[0];
-      for(let image of cartItem.product.images){
-        if(image.mainImage){
-          cartItem.product.mainImage = image;
-          break;
-        }
-      }
     }
   }
 
   deleteCart(productId: string){
-    this.productService.deleteCart(productId).subscribe({
+    this.cartService.deleteCart(productId).subscribe({
       next: (data) => {
-        this.cart = data.result;
+        this.loadCart(() => {
+          this.loadMainImage();
+        });
       },
       error: (error) => {
         console.error(error);
       }
     })
   }
+  onSelectItem(itemId: string, event: Event) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    console.log(`Item ${itemId} is ${isChecked ? 'checked' : 'unchecked'}`);
+    if(isChecked){
+      this.cartItemsChecked.push(itemId);
+      console.log("cartItemsChecked: ", this.cartItemsChecked);
+    }
+    else {
+      this.cartItemsChecked = this.cartItemsChecked.filter(item => item !== itemId);
+      console.log("cartItemsChecked: ", this.cartItemsChecked);
+    }
+    // Thêm logic xử lý tại đây, ví dụ như cập nhật trạng thái của item trong giỏ hàng
+  }
+
 }

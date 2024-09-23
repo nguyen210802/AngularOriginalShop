@@ -3,20 +3,13 @@
     .dropdown:hover .dropdown-menu {
       display: block;
     }
-    /* since nested groupes are not supported we have to use
-       regular css for the nested dropdowns
-    */
+
     li>ul                 { transform: translatex(100%) scale(0) }
     li:hover>ul           { transform: translatex(101%) scale(1) }
     li > button svg       { transform: rotate(-90deg) }
     li:hover > button svg { transform: rotate(-270deg) }
 
-    /* Below styles fake what can be achieved with the tailwind config
-       you need to add the group-hover variant to scale and define your custom
-       min width style.
-       See https://codesandbox.io/s/tailwindcss-multilevel-dropdown-y91j7?file=/index.html
-       for implementation with config file
-    */
+
     .group:hover .group-hover\:scale-100 { transform: scale(1) }
     .group:hover .group-hover\:-rotate-180 { transform: rotate(180deg) }
     .scale-0 { transform: scale(0) }
@@ -64,12 +57,13 @@
                 <svg class="h-6 w-6 leading-none text-gray-300 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                 </svg>
-                <span class="pl-1 text-gray-500 text-md">0</span>
+                <span class="pl-1 text-gray-500 text-md">{{countCart}}</span>
               </a>
 
               <div class="group inline-block">
                 <button class="outline-none focus:outline-none border px-3 py-1 bg-white rounded-sm flex items-center min-w-32">
                   <img src="https://avatars.dicebear.com/api/bottts/2.svg" alt="bottts" width="28" height="28" class="rounded-lg mx-auto">
+                  <p>{{user.username}}</p>
                 </button>
                 <ul class="bg-white border rounded-sm transform scale-0 group-hover:scale-100 absolute transition duration-150 ease-in-out origin-top min-w-32">
                   <li class="rounded-sm px-3 py-1 hover:bg-gray-100" (click)="userClick()">User</li>
@@ -114,7 +108,7 @@
     <div>
       <section class="min-h-screen body-font text-gray-600 ">
         <div class="container mx-auto px-5 py-10">
-          <div class="-m-4 flex flex-wrap">
+          <div class="-m-4 flex flex-wrap" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="onScroll()">
             <div class="w-full p-4 md:w-1/2 lg:w-1/4" (click)="productClick(product.id)" *ngFor="let product of products">
               <a class="relative block h-48 overflow-hidden rounded">
                 <img alt="ecommerce" class="block h-full w-full object-cover object-center cursor-pointer" *ngIf="product.mainImage?.image" [src]="'data:image/jpeg;base64,' + product.mainImage.image.toString()"/>

@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import {Params, Router, RouterOutlet} from "@angular/router";
-import {Product} from "../../service/module/user.module";
+import {Product, UserResponse} from "../../service/module/user.module";
 import {ProductService} from "../../service/product/product.service";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {AuthService} from "../../service/auth/auth.service";
 import {ProductImageService} from "../../service/product-image/product-image.service";
 import {FormsModule} from "@angular/forms";
+import {UserService} from "../../service/user/user.service";
+import {InfiniteScrollDirective} from "ngx-infinite-scroll";
+import {CartService} from "../../service/cart/cart.service";
 
 @Component({
   selector: 'app-home',
@@ -15,33 +18,41 @@ import {FormsModule} from "@angular/forms";
     NgForOf,
     NgOptimizedImage,
     NgIf,
-    FormsModule
+    FormsModule,
+    InfiniteScrollDirective
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+  user: UserResponse = <UserResponse>{};
   products: Product[] =[];
   currentPage = 1;
   totalPages = 0;
-  pageSize = 2;
+  pageSize = 12;
   totalElements = 0;
-  loading = false; // Trạng thái để chỉ định việc đang load thêm sản phẩm
+  countCart: number = 0;
+  loading = false;
   logined: boolean = false;
 
   constructor(private productService: ProductService,
+              private userService: UserService,
               protected authService: AuthService,
-              private productImageService: ProductImageService,
+              private cartService: CartService,
               private router: Router) {}
 
   ngOnInit() {
     this.loadProduct(() => {
       this.loadMainImages();
     });
-    this.checkLogined();
+    this.checkLogined(() => {
+      this.getMyInfo();
+      this.getCartCount();
+    });
+
   }
 
-  checkLogined(){
+  checkLogined(callback: () => void) {
     if(!localStorage.getItem('token'))
     {
       this.logined = false;
@@ -50,7 +61,31 @@ export class HomeComponent {
     this.authService.isLoggedIn().subscribe({
       next: (data) => {
         this.logined = data.result.valid;
-        console.log("logined: ", this.logined)
+        console.log("logined: ", this.logined);
+        callback();
+      },
+      error: (error) => {
+        console.error('L��i khi kiểm tra đăng nhập:', error);
+        callback();
+      }
+    })
+  }
+  getMyInfo(){
+    this.userService.getMyInfo().subscribe({
+      next: (data) => {
+        this.user = data.result;
+      }
+    })
+  }
+
+  getCartCount(){
+    this.cartService.countCart().subscribe({
+      next: (data) => {
+        this.countCart = data.result;
+        console.log("Cart Count: ", this.countCart);
+      },
+      error: (error) => {
+        console.error('L��i khi l�y số l�n hàng trong gi��:', error);
       }
     })
   }
@@ -61,8 +96,8 @@ export class HomeComponent {
     this.productService.getAll(this.currentPage, this.pageSize).subscribe({
       next: (data) => {
         this.products = Array.isArray(data.result.data) ? data.result.data : [data.result.data];
-        this.currentPage++;
         this.totalPages = data.result.totalPages;
+        this.pageSize += this.pageSize;
         this.totalElements = data.result.totalElements;
         this.loading = false;
         callback();
@@ -73,15 +108,16 @@ export class HomeComponent {
     })
   }
 
+  onScroll(){
+    this.loadProduct(() => {
+      this.loadMainImages();
+    });
+  }
+
+
   loadMainImages(){
     for(let product of this.products){
       product.mainImage = product.images[0];
-      for(let image of product.images){
-        if(image.mainImage){
-          product.mainImage = image;
-          break;
-        }
-      }
     }
   }
 

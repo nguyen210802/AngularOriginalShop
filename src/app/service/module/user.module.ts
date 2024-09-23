@@ -3,6 +3,8 @@ export interface UserResponse {
   username: string;
   email: string;
   role: string;
+  phone: string;
+  dob: string;
   createAt: string,
   updateAt: string,
 }
@@ -11,6 +13,8 @@ export interface UserRequest{
   username: string;
   password: string;
   email: string;
+  phone: string;
+  dob: string
 }
 
 export interface AuthenticationRequest{

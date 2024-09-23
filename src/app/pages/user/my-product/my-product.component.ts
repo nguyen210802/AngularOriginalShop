@@ -1,19 +1,20 @@
 import { Component } from '@angular/core';
-import {Router, RouterOutlet} from "@angular/router";
+import {RouterOutlet} from "@angular/router";
 import {NgForOf, NgIf} from "@angular/common";
 import {Product} from "../../../service/module/user.module";
 import {ProductService} from "../../../service/product/product.service";
 import {AuthService} from "../../../service/auth/auth.service";
-import {ProductImageService} from "../../../service/product-image/product-image.service";
+import {InfiniteScrollDirective} from "ngx-infinite-scroll";
 
 @Component({
   selector: 'app-my-product',
   standalone: true,
-    imports: [
-        RouterOutlet,
-        NgForOf,
-        NgIf
-    ],
+  imports: [
+    RouterOutlet,
+    NgForOf,
+    NgIf,
+    InfiniteScrollDirective
+  ],
   templateUrl: './my-product.component.html',
   styleUrl: './my-product.component.css'
 })
@@ -21,15 +22,13 @@ export class MyProductComponent {
   products: Product[] =[];
   currentPage = 1;
   totalPages = 0;
-  pageSize = 2;
+  pageSize = 12;
   totalElements = 0;
   loading = false; // Trạng thái để chỉ định việc đang load thêm sản phẩm
   logined: boolean = false;
 
   constructor(private productService: ProductService,
-              protected authService: AuthService,
-              private productImageService: ProductImageService,
-              private router: Router) {}
+              protected authService: AuthService) {}
 
   ngOnInit() {
     this.loadProduct(() => {
@@ -50,13 +49,17 @@ export class MyProductComponent {
   loadProduct(callBack: () => void) {
     if (this.loading) return;
     this.loading = true;
+
+    if(this.totalPages != 0 && this.currentPage == this.totalPages)
+      return;
+
     this.productService.getMyProduct(this.currentPage, this.pageSize).subscribe({
       next: (data) => {
         this.products = Array.isArray(data.result.data) ? data.result.data : [data.result.data];
         console.log("Products: ", this.products)
-        this.currentPage++;
         this.totalPages = data.result.totalPages;
         this.totalElements = data.result.totalElements;
+        this.pageSize += this.pageSize;
         this.loading = false;
         callBack();
       },
@@ -69,24 +72,28 @@ export class MyProductComponent {
 
   loadMainImage(){
     for(let product of this.products){
-      console.log("load For Product");
       product.mainImage = product.images[0];
-      for(let image of product.images){
-        if(image.mainImage){
-          product.mainImage = image;
-          console.log("MainImage: ",image);
-          console.log("ProductId: ",product.id);
-          break;
-        }
-        else {
-          console.log("Image Else: ", image)
-        }
-      }
     }
   }
 
-  createProductClick(){
-    return this.router.navigate(['/createProduct']);
+  onScroll(){
+    this.loadProduct(() => {
+      this.loadMainImage();
+    });
+  }
+
+  deleteProduct(productId: string){
+    this.productService.deleteProduct(productId).subscribe({
+      next: (data) => {
+        this.totalPages = 0;
+        this.loadProduct(() => {
+          this.loadMainImage();
+        });
+      },
+      error: (error) => {
+        console.error('There was an error!', error);
+      }
+    })
   }
 
   protected readonly Symbol = Symbol;

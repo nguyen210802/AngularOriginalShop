@@ -29,7 +29,7 @@
             </svg>
           </div>
 
-          <a href="#" class="flex h-10 items-center px-2 rounded-lg border border-gray-200 hover:border-gray-300 focus:outline-none hover:shadow-inner">
+          <a href="cart" class="flex h-10 items-center px-2 rounded-lg border border-gray-200 hover:border-gray-300 focus:outline-none hover:shadow-inner">
             <svg class="h-6 w-6 leading-none text-gray-300 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
             </svg>
@@ -55,61 +55,30 @@
   </div>
 
   <div class="py-6">
-    <!-- Breadcrumbs -->
-<!--    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">-->
-<!--      <div class="flex items-center space-x-2 text-gray-400 text-sm">-->
-<!--        <a href="#" class="hover:underline hover:text-gray-600">Home</a>-->
-<!--        <span>-->
-<!--        <svg class="h-5 w-5 leading-none text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">-->
-<!--          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />-->
-<!--        </svg>-->
-<!--      </span>-->
-<!--        <a href="#" class="hover:underline hover:text-gray-600">Electronics</a>-->
-<!--        <span>-->
-<!--        <svg class="h-5 w-5 leading-none text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">-->
-<!--          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />-->
-<!--        </svg>-->
-<!--      </span>-->
-<!--        <span>Headphones</span>-->
-<!--      </div>-->
-<!--    </div>-->
-    <!-- ./ Breadcrumbs -->
-
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
       <div class="flex flex-col md:flex-row -mx-4">
         <div class="md:flex-1 px-4">
-          <div x-data="{ image: 1 }" x-cloak>
+          <div *ngIf="product && product.images">
             <div class="h-64 md:h-80 rounded-lg bg-gray-100 mb-4">
+              <ng-container *ngFor="let img of product.images; let i = index">
+                <div *ngIf="selectedImage === i" class="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">
+<!--                  <img [src]="img" [alt]="'Product image ' + (i + 1)" class="max-h-full max-w-full object-contain">-->
+                    <img alt="ecommerce" class="block h-full w-full object-cover object-center cursor-pointer" *ngIf="img?.image" [src]="'data:image/jpeg;base64,' + img.image.toString()"/>
 
-              <div *ngFor="let image of product.images" class="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">
-                <img alt="ecommerce" class="block h-full w-full object-cover object-center cursor-pointer" *ngIf="image?.image" [src]="'data:image/jpeg;base64,' + image.image.toString()"/>
-              </div>
-
-<!--              <div x-show="image === 1" class="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">-->
-<!--                <img alt="ecommerce" class="block h-full w-full object-cover object-center cursor-pointer" *ngIf="product?.image" [src]="'data:image/jpeg;base64,' + product.image.toString()"/>-->
-<!--              </div>-->
-
-<!--              <div x-show="image === 2" class="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">-->
-<!--                <img alt="ecommerce" class="block h-full w-full object-cover object-center cursor-pointer" *ngIf="product?.image" [src]="'data:image/jpeg;base64,' + product.image.toString()"/>-->
-<!--              </div>-->
-
-<!--              <div x-show="image === 3" class="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">-->
-<!--                <span class="text-5xl">3</span>-->
-<!--              </div>-->
-
-<!--              <div x-show="image === 4" class="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">-->
-<!--                <span class="text-5xl">4</span>-->
-<!--              </div>-->
+                </div>
+              </ng-container>
             </div>
 
             <div class="flex -mx-2 mb-4">
-              <template x-for="i in 4">
+              <ng-container *ngFor="let img of product.images; let i = index">
                 <div class="flex-1 px-2">
-                  <button x-on:click="image = i" :class="{ 'ring-2 ring-indigo-300 ring-inset': image === i }" class="focus:outline-none w-full rounded-lg h-24 md:h-32 bg-gray-100 flex items-center justify-center">
-                    <span x-text="i" class="text-2xl"></span>
+                  <button (click)="selectedImage = i"
+                          [ngClass]="{ 'ring-2 ring-indigo-300 ring-inset': selectedImage === i }"
+                          class="focus:outline-none w-full rounded-lg h-24 md:h-32 bg-gray-100 flex items-center justify-center">
+                    <img alt="ecommerce" class="block h-full w-full object-cover object-center cursor-pointer" *ngIf="img?.image" [src]="'data:image/jpeg;base64,' + img.image.toString()"/>
                   </button>
                 </div>
-              </template>
+              </ng-container>
             </div>
           </div>
         </div>
