@@ -25,8 +25,15 @@ export class UserService {
     return this.http.get<any>(`${this.url}/myCart`,{headers: this.getHeaders()})
   }
 
-  createUser(user: UserRequest): Observable<ApiResponse<UserResponse>> {
+  createUser(user: UserRequest): Observable<ApiResponse<String>> {
     return this.http.post<any>(`${this.url}/registration`, user);
+  }
+
+  confirmOtpAndCreateUser(user: UserRequest, otp: string): Observable<ApiResponse<UserResponse>>{
+    return this.http.post<any>(`${this.url}/confirmOtpAndCreateUser`, user, {
+      params: {
+        otp: otp
+      }});
   }
 
   updateUser(user: UserRequest): Observable<ApiResponse<UserResponse>>{

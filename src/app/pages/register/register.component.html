@@ -1,34 +1,65 @@
 <div class="container">
   <!-- Create by joker banny -->
-  <div class="h-screen bg-indigo-100 flex justify-center items-center">
+  <div *ngIf="!otpExist" class="h-screen bg-indigo-100 flex justify-center items-center">
     <div class="lg:w-2/5 md:w-1/2 w-2/3">
-      <form (ngSubmit)="createUser()" #userForm="ngForm" class="bg-white p-10 rounded-lg shadow-lg min-w-full">
-        <h1 class="text-center text-2xl mb-6 text-gray-600 font-bold font-sans">Formregister</h1>
+      <form (ngSubmit)="createUser()" class="bg-white p-10 rounded-lg shadow-lg min-w-full">
+        <h1 class="text-center text-2xl mb-6 text-gray-600 font-bold font-sans">FormRegister</h1>
         <div>
           <label class="text-gray-800 font-semibold block my-3 text-md"  for="username">Phone</label>
-          <input class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" type="text" [(ngModel)]="newUser.phone" name="username" id="phone" placeholder="phone" />
+          <input class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" type="tel" [(ngModel)]="newUser.phone" name="username" id="phone" placeholder="phone"/>
+          <div *ngIf="errorPhone" class="text-red-500 mt-2">
+            {{ errorPhone }}
+          </div>
+
         </div>
         <div>
           <label class="text-gray-800 font-semibold block my-3 text-md"  for="username">Username</label>
-          <input class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" type="text" [(ngModel)]="newUser.username" name="username" id="username" placeholder="username" />
+          <input class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" type="text" [(ngModel)]="newUser.username" name="username" id="username" placeholder="username"/>
+          <div *ngIf="errorUsername" class="text-red-500 mt-2">
+            {{ errorUsername }}
+          </div>
         </div>
         <div>
           <label class="text-gray-800 font-semibold block my-3 text-md" for="email">Email</label>
-          <input class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" type="text" [(ngModel)]="newUser.email" name="email" id="email" placeholder="@email" />
+          <input class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" type="email" [(ngModel)]="newUser.email" name="email" id="email" placeholder="@email"/>
+          <div *ngIf="errorEmail" class="text-red-500 mt-2">
+            {{ errorEmail }}
+          </div>
         </div>
         <div>
           <label class="text-gray-800 font-semibold block my-3 text-md" for="password">Password</label>
-          <input class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" type="password" [(ngModel)]="newUser.password" name="password" id="password" placeholder="password" />
+          <input class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" type="password" [(ngModel)]="newUser.password" name="password" id="password" placeholder="password"/>
         </div>
         <div>
           <label class="text-gray-800 font-semibold block my-3 text-md" for="confirm">Confirm password</label>
-          <input class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" type="password" name="confirm" id="confirm" placeholder="confirm password" />
+          <input class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" type="password" [(ngModel)]="confirmPassword" name="confirm" id="confirm" placeholder="confirm password"/>
         </div>
-        <button type="submit" class="w-full mt-6 bg-indigo-600 rounded-lg px-4 py-2 text-lg text-white tracking-wide font-semibold font-sans">Register</button>
+        <button type="submit" class="w-full mt-6 bg-indigo-600 rounded-lg px-4 py-2 text-lg text-white tracking-wide font-semibold font-sans" >Register</button>
         <button type="submit" class="w-full mt-6 mb-3 bg-indigo-100 rounded-lg px-4 py-2 text-lg text-gray-800 tracking-wide font-semibold font-sans">Login</button>
+
+        <div *ngIf="errorMessage" class="text-red-500 mt-2">
+          {{ errorMessage }}
+        </div>
       </form>
     </div>
   </div>
+
+  <!-- otp-verification.component.html -->
+  <div *ngIf="otpExist" class="flex justify-center items-center h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-80">
+      <h2 class="text-2xl font-bold mb-6 text-center">OTP Verification</h2>
+      <form (ngSubmit)="confirmOtp()" #otpForm="ngForm" class="bg-white p-10 rounded-lg shadow-lg min-w-full">
+        <input
+          class="w-full h-12 text-center border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+          type="text" name="otp" id="otp" placeholder="Enter OTP" [(ngModel)]="otp"/>
+        <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition" [disabled]="otpForm">
+          Xác nhận OTP
+        </button>
+      </form>
+
+    </div>
+  </div>
+
 
   <router-outlet/>
 </div>

@@ -18,38 +18,33 @@ import {NgIf} from "@angular/common";
 })
 export class LoginComponent {
   authRequest: AuthenticationRequest = <AuthenticationRequest>{};
-  errorUsername: string = '';
-  errorPassword: string = '';
   errorMessage: string = '';
 
   constructor(private authService: AuthService, private router: Router) {}
+
+  ngOnInit(){
+    this.checkLogined();
+  }
+
+  checkLogined() {
+    if(!localStorage.getItem('token'))
+      return;
+    this.authService.isLoggedIn().subscribe({
+      next: (data) => {
+        if(data.result)
+          this.router.navigate(['']);
+      },
+      error: (error) => {
+        console.error('L��i khi kiểm tra đăng nhập:', error);
+      }
+    })
+  }
 
   registerClick(){
     this.router.navigate(['register']);
   }
 
   onSubmit() {
-    // if(this.authRequest.username == null){
-    //   this.errorUsername = 'Tai khoan khong duoc trong!';
-    //   return;
-    // }
-    // else if( this.authRequest.username.length < 5){
-    //   this.errorUsername = 'Tên tài khoản phải có ít nhất 5 ký tự';
-    //   return;
-    // }
-    // else
-    //   this.errorUsername = '';
-    //
-    // if(this.authRequest.password == null){
-    //   this.errorPassword = 'Mật khẩu không duoc trong!';
-    //   return;
-    // }
-    // else if(this.authRequest.password.length < 5){
-    //   this.errorPassword = 'Mật khẩu phải có ít nhất 5 ký tự';
-    //   return;
-    // }
-    // else
-    //   this.errorPassword = '';
 
     this.authService.login(this.authRequest).subscribe({
       next: (data) => {
@@ -65,7 +60,7 @@ export class LoginComponent {
         }
       },
       error: (error) => {
-        this.errorMessage = 'Có lỗi xảy ra khi đăng nhập';
+        this.errorMessage = 'Có lỗi xảy ra khi đăng nhập: '+ error;
       }
     });
   }
