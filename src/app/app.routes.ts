@@ -2,8 +2,9 @@ import { Routes } from '@angular/router';
 import {LoginComponent} from "./pages/login/login.component";
 import {RegisterComponent} from "./pages/register/register.component";
 import {RoleGuard} from "./service/configugation/RoleGuard";
-import {Authenticated} from "./service/module/user.module";
+import {Authenticated} from "./module/user.module";
 import {authGuard} from "./service/configugation/AuthGuard";
+import {OrderComponent} from "./pages/order/order/order.component";
 
 export const routes: Routes = [
   {
@@ -13,6 +14,10 @@ export const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent
+  },
+  {
+    path: 'order',
+    component: OrderComponent
   },
   {
     path: 'user',

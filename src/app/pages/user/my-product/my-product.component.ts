@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {RouterOutlet} from "@angular/router";
 import {NgForOf, NgIf} from "@angular/common";
-import {Product} from "../../../service/module/user.module";
+import {Product} from "../../../module/user.module";
 import {ProductService} from "../../../service/product/product.service";
 import {AuthService} from "../../../service/auth/auth.service";
 import {InfiniteScrollDirective} from "ngx-infinite-scroll";
@@ -31,9 +31,7 @@ export class MyProductComponent {
               protected authService: AuthService) {}
 
   ngOnInit() {
-    this.loadProduct(() => {
-      this.loadMainImage();
-    });
+    this.loadProduct();
     this.checkLogined();
   }
 
@@ -46,7 +44,7 @@ export class MyProductComponent {
     })
   }
 
-  loadProduct(callBack: () => void) {
+  loadProduct() {
     if (this.loading) return;
     this.loading = true;
 
@@ -61,40 +59,26 @@ export class MyProductComponent {
         this.totalElements = data.result.totalElements;
         this.pageSize += this.pageSize;
         this.loading = false;
-        callBack();
       },
       error: (error) => {
         console.error('There was an error!', error);
-        callBack();
       }
     })
   }
 
-  loadMainImage(){
-    for(let product of this.products){
-      product.mainImage = product.images[0];
-    }
-  }
-
   onScroll(){
-    this.loadProduct(() => {
-      this.loadMainImage();
-    });
+    this.loadProduct();
   }
 
   deleteProduct(productId: string){
     this.productService.deleteProduct(productId).subscribe({
       next: (data) => {
         this.totalPages = 0;
-        this.loadProduct(() => {
-          this.loadMainImage();
-        });
+        this.loadProduct();
       },
       error: (error) => {
         console.error('There was an error!', error);
       }
     })
   }
-
-  protected readonly Symbol = Symbol;
 }

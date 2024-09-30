@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {ActivatedRoute, Router, RouterOutlet} from "@angular/router";
-import {UserRequest, UserResponse} from "../../../service/module/user.module";
+import {UserRequest, UserResponse} from "../../../module/user.module";
 import {AdminService} from "../../../service/admin/admin.service";
 
 @Component({

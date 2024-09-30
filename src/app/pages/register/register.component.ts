@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {Router, RouterOutlet} from "@angular/router";
 import {FormsModule} from "@angular/forms";
-import {UserRequest} from "../../service/module/user.module";
+import {UserRequest} from "../../module/user.module";
 import {UserService} from "../../service/user/user.service";
 import {NgIf} from "@angular/common";
 

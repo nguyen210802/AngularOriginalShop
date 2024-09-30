@@ -45,7 +45,6 @@ export interface Product {
   seller: UserResponse;  // Định nghĩa interface User tương tự
   name: string;
   images: ProductImage[];
-  mainImage: ProductImage;// Kiểu dữ liệu để lưu trữ ảnh
   description?: string;  // Dấu ? để cho phép giá trị này có thể null
   manufacturer?: string;
   price: number;

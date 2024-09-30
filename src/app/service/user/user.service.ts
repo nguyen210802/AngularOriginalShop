@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Cart, UserRequest, UserResponse} from "../module/user.module";
+import {Cart, UserRequest, UserResponse} from "../../module/user.module";
 import {ApiResponse} from "../../app.module";
 
 @Injectable({

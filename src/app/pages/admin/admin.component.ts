@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {AdminService} from "../../service/admin/admin.service";
-import {UserResponse} from "../../service/module/user.module";
+import {UserResponse} from "../../module/user.module";
 import {NgForOf, NgIf} from "@angular/common";
 import {Params, Router, RouterOutlet} from "@angular/router";
 import {InfiniteScrollDirective} from "ngx-infinite-scroll";

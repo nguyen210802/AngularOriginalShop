@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {ActivatedRoute, RouterOutlet} from "@angular/router";
 import {ProductService} from "../../../service/product/product.service";
-import {Product} from "../../../service/module/user.module";
+import {Product} from "../../../module/user.module";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {CartService} from "../../../service/cart/cart.service";
 
@@ -26,30 +26,22 @@ export class ProductComponent {
               private cartService: CartService) {}
 
   ngOnInit() {
-    this.loadProduct(() => {
-      this.loadMainImage();
-    })
+    this.loadProduct();
   }
 
-  loadProduct(callback: () => void){
+  loadProduct(){
     this.route.params.subscribe(params => {
       const productId = params['productId'];  // Lấy path variable từ URL
       this.productService.getById(productId).subscribe({
         next: (data) => {
           this.product = data.result;
           console.log("product: ", this.product);
-          callback();
         },
         error: (error) => {
           console.error(error);
-          callback();
         }
       });
     });
-  }
-
-  loadMainImage(){
-    this.product.mainImage = this.product.images[0];
   }
 
   addCart(){

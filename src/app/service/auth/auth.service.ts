@@ -6,7 +6,7 @@ import {
   AuthenticationResponse,
   IntrospectRequest,
   IntrospectResponse
-} from "../module/user.module";
+} from "../../module/user.module";
 import {Observable, of, tap} from "rxjs";
 import {ApiResponse} from "../../app.module";
 

@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import {Params, Router, RouterOutlet} from "@angular/router";
-import {Product, UserResponse} from "../../service/module/user.module";
+import {RouterOutlet} from "@angular/router";
+import {Product, UserResponse} from "../../module/user.module";
 import {ProductService} from "../../service/product/product.service";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {AuthService} from "../../service/auth/auth.service";
-import {ProductImageService} from "../../service/product-image/product-image.service";
 import {FormsModule} from "@angular/forms";
 import {UserService} from "../../service/user/user.service";
 import {InfiniteScrollDirective} from "ngx-infinite-scroll";
@@ -38,13 +37,10 @@ export class HomeComponent {
   constructor(private productService: ProductService,
               private userService: UserService,
               protected authService: AuthService,
-              private cartService: CartService,
-              private router: Router) {}
+              private cartService: CartService) {}
 
   ngOnInit() {
-    this.loadProduct(() => {
-      this.loadMainImages();
-    });
+    this.loadProduct();
     this.checkLogined(() => {
       this.getMyInfo();
       this.getCartCount();
@@ -71,6 +67,8 @@ export class HomeComponent {
     })
   }
   getMyInfo(){
+    if(!this.logined)
+      return;
     this.userService.getMyInfo().subscribe({
       next: (data) => {
         this.user = data.result;
@@ -79,6 +77,8 @@ export class HomeComponent {
   }
 
   getCartCount(){
+    if(!this.logined)
+      return;
     this.cartService.countCart().subscribe({
       next: (data) => {
         this.countCart = data.result;
@@ -90,7 +90,7 @@ export class HomeComponent {
     })
   }
 
-  loadProduct(callback: () => void) {
+  loadProduct() {
     if (this.loading) return;
     this.loading = true;
     this.productService.getAll(this.currentPage, this.pageSize).subscribe({
@@ -100,7 +100,6 @@ export class HomeComponent {
         this.pageSize += this.pageSize;
         this.totalElements = data.result.totalElements;
         this.loading = false;
-        callback();
       },
       error: (error) => {
         console.error('There was an error!', error);
@@ -109,43 +108,23 @@ export class HomeComponent {
   }
 
   onScroll(){
-    this.loadProduct(() => {
-      this.loadMainImages();
-    });
+    this.loadProduct();
   }
 
-
-  loadMainImages(){
-    for(let product of this.products){
-      product.mainImage = product.images[0];
-    }
-  }
-
-  productClick(productId: string){
-    this.router.navigate([`${productId}`]);
-  }
-
-  searchProduct(){
-    console.log("Search Product");
-  }
-
-  loginClick(){
-    this.router.navigate(['login']);
-  }
-  registerClick(){
-    this.router.navigate(['register']);
-  }
-
-  userClick(){
-    this.router.navigate(['user']);
-  }
-
-  orderClick(){
-    console.log("Order Click");
-  }
-
-  logoutClick(){
-    this.authService.logout();
-    this.router.navigate(['login']);
+  searchProduct(productName: string){
+    this.currentPage = 1;
+    this.totalPages = 0;
+    this.products = [];
+    this.productService.getAllByName(this.currentPage, this.pageSize, productName).subscribe({
+      next: (data) => {
+        this.products = Array.isArray(data.result.data)? data.result.data : [data.result.data];
+        this.totalPages = data.result.totalPages;
+        this.pageSize += this.pageSize;
+        this.totalElements = data.result.totalElements;
+      },
+      error: (error) => {
+        console.error('There was an error!', error);
+      }
+    })
   }
 }

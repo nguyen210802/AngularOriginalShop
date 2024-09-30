@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {ApiResponse, PageResponse} from "../../app.module";
-import {UserRequest, UserResponse} from "../module/user.module";
+import {UserRequest, UserResponse} from "../../module/user.module";
 
 @Injectable({
   providedIn: 'root'

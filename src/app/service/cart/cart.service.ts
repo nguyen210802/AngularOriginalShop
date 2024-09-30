@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
 import {ApiResponse} from "../../app.module";
-import {Cart} from "../module/user.module";
+import {Cart} from "../../module/user.module";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Injectable({
@@ -15,6 +15,14 @@ export class CartService {
   getHeaders(): HttpHeaders {
     const token = localStorage.getItem('token');
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
+
+  getCartByProductName(productName: string): Observable<ApiResponse<Cart>>{
+    return this.http.get<any>(`${this.url}/getCartByProductName`, {
+      params: {
+        productName: productName
+      },
+      headers: this.getHeaders() });
   }
 
   countCart(): Observable<ApiResponse<number>>{

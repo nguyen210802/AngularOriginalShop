@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {RouterOutlet} from "@angular/router";
-import {Cart, CartItem} from "../../../service/module/user.module";
+import {Cart, CartItem} from "../../../module/user.module";
 import {UserService} from "../../../service/user/user.service";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
@@ -21,43 +21,41 @@ import {CartService} from "../../../service/cart/cart.service";
 })
 export class CartComponent {
   cart: Cart = <Cart>{};
-  cartItems: CartItem[] = [];
   cartItemsChecked: string[] = [];
   constructor(private userService: UserService,
               private cartService: CartService) {}
   ngOnInit(): void {
-    this.loadCart(() => {
-      this.loadMainImage();
-    });
+    this.loadCart();
   }
 
-  loadCart(callback: () => void){
+  loadCart(){
     this.userService.getMyCart().subscribe({
       next: (data) => {
         this.cart = data.result;
-        this.cartItems = this.cart.cartItems;
+        // this.cartItems = this.cart.cartItems;
         console.log("Cart: ", this.cart);
-        console.log("CartItems: ", this.cartItems);
-        callback();
       },
       error: (error) => {
         console.error(error);
-        callback();
       }
     });
   }
-  loadMainImage(){
-    for(let cartItem of this.cartItems){
-      cartItem.product.mainImage = cartItem.product.images[0];
-    }
+
+  searchByProductName(productName: string){
+    this.cartService.getCartByProductName(productName).subscribe({
+      next: (data) => {
+        this.cart = data.result;
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    })
   }
 
   addCart(productId: string){
     this.cartService.addCart(productId).subscribe({
       next: (data) => {
-        this.loadCart(() => {
-          this.loadMainImage();
-        });
+        this.loadCart();
       },
       error: (error) => {
         console.error(error);
@@ -68,9 +66,7 @@ export class CartComponent {
   reduceCart(productId: string){
     this.cartService.reduceCart(productId).subscribe({
       next: (data) => {
-        this.loadCart(() => {
-          this.loadMainImage();
-        });
+        this.loadCart();
       },
       error: (error) => {
         console.error(error);
@@ -81,9 +77,7 @@ export class CartComponent {
   deleteCart(productId: string){
     this.cartService.deleteCart(productId).subscribe({
       next: (data) => {
-        this.loadCart(() => {
-          this.loadMainImage();
-        });
+        this.loadCart();
       },
       error: (error) => {
         console.error(error);

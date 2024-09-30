@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {Router, RouterOutlet} from "@angular/router";
-import {Authenticated, AuthenticationRequest} from "../../service/module/user.module";
+import {Authenticated, AuthenticationRequest} from "../../module/user.module";
 import {AuthService} from "../../service/auth/auth.service";
 import {FormsModule} from "@angular/forms";
 import {NgIf} from "@angular/common";
@@ -23,6 +23,7 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(){
+    console.log(localStorage.getItem('token'))
     this.checkLogined();
   }
 
@@ -31,7 +32,7 @@ export class LoginComponent {
       return;
     this.authService.isLoggedIn().subscribe({
       next: (data) => {
-        if(data.result)
+        if(data.result.valid)
           this.router.navigate(['']);
       },
       error: (error) => {

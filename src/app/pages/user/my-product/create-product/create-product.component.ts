@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {Router, RouterOutlet} from "@angular/router";
 import {NgForOf, NgIf} from "@angular/common";
-import {ProductRequest} from "../../../../service/module/user.module";
+import {ProductRequest} from "../../../../module/user.module";
 import {FormsModule} from "@angular/forms";
 import {ProductService} from "../../../../service/product/product.service";
 

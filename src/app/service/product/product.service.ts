@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Cart, Product, ProductRequest} from "../module/user.module";
+import {Cart, Product, ProductRequest} from "../../module/user.module";
 import {ApiResponse, PageResponse} from "../../app.module";
 
 @Injectable({
@@ -22,6 +22,16 @@ export class ProductService {
       params: {
         page: page.toString(),
         size: size.toString()
+      }
+    });
+  }
+
+  getAllByName(page: number, size : number, name: string): Observable<ApiResponse<PageResponse<Product>>> {
+    return this.http.get<any>(`${this.url}/getAllByName`, {
+      params: {
+        page: page.toString(),
+        size: size.toString(),
+        name: name
       }
     });
   }

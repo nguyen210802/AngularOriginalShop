@@ -16,7 +16,7 @@
         <div class="-m-4 flex flex-wrap" >
           <div class="w-full p-4 md:w-1/2 lg:w-1/4" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="onScroll()" *ngFor="let product of products">
             <a class="relative block h-48 overflow-hidden rounded">
-              <img alt="ecommerce" class="block h-full w-full object-cover object-center cursor-pointer" *ngIf="product.mainImage?.image" [src]="'data:image/jpeg;base64,' + product.mainImage.image.toString()"/>
+              <img alt="ecommerce" class="block h-full w-full object-cover object-center cursor-pointer" *ngIf="product.images[0]?.image" [src]="'data:image/jpeg;base64,' + product.images[0].image.toString()"/>
             </a>
             <div class="mt-4">
               <h2 class="title-font mb-1 text-lg text-gray-900">{{product.name}}</h2>

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {AuthService} from "../../service/auth/auth.service";
 import {Router, RouterOutlet} from "@angular/router";
 import {UserService} from "../../service/user/user.service";
-import {UserResponse} from "../../service/module/user.module";
+import {UserResponse} from "../../module/user.module";
 
 @Component({
   selector: 'app-user',
