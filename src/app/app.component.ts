@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import {Router, RouterOutlet} from '@angular/router';
-import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
+import {RouterOutlet} from '@angular/router';
+import {NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {InfiniteScrollDirective} from "ngx-infinite-scroll";
-import {Product, UserResponse} from "./module/user.module";
-import {ProductService} from "./service/product/product.service";
+import {Notifications, UserResponse} from "./module/user.module";
 import {UserService} from "./service/user/user.service";
 import {AuthService} from "./service/auth/auth.service";
 import {CartService} from "./service/cart/cart.service";
+import {NotificationService} from "./service/notification/notification.service";
 
 @Component({
   selector: 'app-root',
@@ -17,25 +17,30 @@ import {CartService} from "./service/cart/cart.service";
     NgOptimizedImage,
     NgIf,
     FormsModule,
-    InfiniteScrollDirective],
+    InfiniteScrollDirective, NgClass],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   user: UserResponse = <UserResponse>{};
+  notifications: Notifications[] = [];
+  countReadFalse: number = 0;
   countCart: number = 0;
   logined: boolean = false;
+  page: number = 1;
+  size: number = 10;
 
-  constructor(private productService: ProductService,
-              private userService: UserService,
+  constructor(private userService: UserService,
               protected authService: AuthService,
               private cartService: CartService,
-              private router: Router) {}
+              private notificationService: NotificationService) {}
 
   ngOnInit() {
     this.checkLogined(() => {
       this.getMyInfo();
       this.getCartCount();
+      this.getNotifications();
+      this.getCountReadFalse();
     });
 
   }
@@ -77,7 +82,51 @@ export class AppComponent {
         console.log("Cart Count: ", this.countCart);
       },
       error: (error) => {
-        console.error('L��i khi l�y số l�n hàng trong gi��:', error);
+        console.error('Loi khi lay thon bao:', error);
+      }
+    })
+  }
+
+  getNotifications(){
+    if(!this.logined)
+      return;
+    this.notificationService.getNotifications(this.page, this.size).subscribe({
+      next: (data) => {
+        this.notifications = Array.isArray(data.result.data) ? data.result.data : [data.result.data];
+        console.log("Notifications: ", this.notifications);
+      },
+      error: (error) => {
+        console.error('Loi khi lay thong bao:', error);
+      }
+    })
+  }
+
+  readNotifications(notificationId: string){
+    const notification = this.notifications.find(n => n.id === notificationId);
+    if (notification && !notification.read)
+      // Đánh dấu thông báo là đã đọc
+      notification.read = true;
+    else
+      return;
+    this.notificationService.readNotification(notificationId).subscribe({
+      next: () => {
+        this.countReadFalse -= 1;
+      },
+      error: (error) => {
+        console.error('Loi khi doc thong bao:', error);
+      }
+    })
+  }
+
+  getCountReadFalse(){
+    if(!this.logined)
+      return;
+    this.notificationService.getCountReadFalse().subscribe({
+      next: (data) => {
+        this.countReadFalse = data.result;
+      },
+      error: (error) => {
+        console.error('Loi khi lay so luong thong bao:', error);
       }
     })
   }

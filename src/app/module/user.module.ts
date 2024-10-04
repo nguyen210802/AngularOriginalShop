@@ -104,3 +104,11 @@ export interface Cart{
   buyer: UserResponse;
   cartItems: CartItem[];
 }
+
+export interface Notifications {
+  id: string;
+  user: UserResponse;
+  message: string;
+  read: boolean;
+  createAt: Date;
+}

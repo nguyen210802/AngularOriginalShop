@@ -7,7 +7,7 @@ import {
   IntrospectRequest,
   IntrospectResponse
 } from "../../module/user.module";
-import {Observable, of, tap} from "rxjs";
+import {Observable, tap} from "rxjs";
 import {ApiResponse} from "../../app.module";
 
 @Injectable({
@@ -34,6 +34,18 @@ export class AuthService {
       })
     )
   }
+
+  loginWithGoogle(): Observable<ApiResponse<AuthenticationResponse>> {
+    return this.http.post<ApiResponse<AuthenticationResponse>>(`${this.url}/loginWithGoogle`, {}).pipe(
+      tap((data: ApiResponse<AuthenticationResponse>) => {
+        if (data.result?.authenticated) {
+          localStorage.setItem('token', data.result.token);
+        }
+      }),
+    );
+  }
+
+
 
   getDecodedToken(): any{
     const token = localStorage.getItem('token');

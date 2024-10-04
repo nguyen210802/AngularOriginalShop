@@ -34,6 +34,30 @@
         </div>
 
         <div *ngIf="logined" class="flex items-center space-x-4">
+          <!-- Notification icon -->
+          <div class="group inline-block">
+            <button class="outline-none focus:outline-none bg-white rounded-sm flex items-center">
+              <a class="relative flex h-10 items-center px-2 rounded-lg border border-gray-200 hover:border-gray-300 focus:outline-none hover:shadow-inner">
+                <svg class="h-6 w-6 leading-none text-gray-300 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14h-1V10a6 6 0 10-12 0v4H4a2 2 0 00-1.995 1.85L2 17h5m2 0v2a2 2 0 004 0v-2m2 0h-8" />
+                </svg>
+                <!-- Notification badge -->
+                <span *ngIf="countReadFalse != 0" class="absolute top-0 right-0 inline-block w-4 h-4 bg-red-500 text-white text-xs font-bold rounded-full text-center transform -translate-y-1/2 translate-x-1/2">
+                  {{countReadFalse}}
+                </span>
+              </a>
+            </button>
+            <ul class="bg-white border rounded-sm transform scale-0 group-hover:scale-100 absolute transition duration-150 ease-in-out origin-top min-w-32">
+              <p>Notification</p>
+              <li *ngFor="let notification of notifications" [ngClass]="{'bg-gray-100': !notification.read, 'bg-white': notification.read}"
+                  class="rounded-sm px-3 py-1 mt-2" (click)="readNotifications(notification.id)">
+                <p>Xac nhan don hang</p>
+                <p>{{notification.message}}</p>
+                <p>{{notification.createAt}}</p>
+              </li>
+            </ul>
+          </div>
+
           <a href="/cart" class="flex h-10 items-center px-2 rounded-lg border border-gray-200 hover:border-gray-300 focus:outline-none hover:shadow-inner">
             <svg class="h-6 w-6 leading-none text-gray-300 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
