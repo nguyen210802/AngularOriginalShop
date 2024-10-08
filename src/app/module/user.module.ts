@@ -25,6 +25,14 @@ export interface AuthenticationRequest{
 export interface AuthenticationResponse{
   authenticated: boolean;
   token: string;
+  refreshToken: string;
+}
+
+export class RefreshTokenRequest{
+  refreshToken: string;
+  constructor(refreshToken: string) {
+    this.refreshToken = refreshToken;
+  }
 }
 
 export interface IntrospectRequest{

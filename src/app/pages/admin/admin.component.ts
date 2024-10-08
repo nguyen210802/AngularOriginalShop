@@ -33,7 +33,8 @@ export class AdminComponent {
       callback();
       return;
     }
-    this.authService.isLoggedIn().subscribe({
+    // @ts-ignore
+    this.authService.introspect(localStorage.getItem('token')).subscribe({
       next: (data) => {
         console.log("checklogined: ");
         callback();

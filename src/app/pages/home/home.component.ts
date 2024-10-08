@@ -40,11 +40,11 @@ export class HomeComponent {
               private cartService: CartService) {}
 
   ngOnInit() {
-    this.loadProduct();
-    this.checkLogined(() => {
-      this.getMyInfo();
-      this.getCartCount();
-    });
+    // this.loadProduct();
+    // this.checkLogined(() => {
+    //   this.getMyInfo();
+    //   this.getCartCount();
+    // });
 
   }
 
@@ -54,10 +54,12 @@ export class HomeComponent {
       this.logined = false;
       return;
     }
-    this.authService.isLoggedIn().subscribe({
+    // @ts-ignore
+    this.authService.introspect(localStorage.getItem('token')).subscribe({
       next: (data) => {
         this.logined = data.result.valid;
         console.log("logined: ", this.logined);
+        console.log("token: ", localStorage.getItem('token'));
         callback();
       },
       error: (error) => {

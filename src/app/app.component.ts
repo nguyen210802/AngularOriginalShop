@@ -46,15 +46,42 @@ export class AppComponent {
   }
 
   checkLogined(callback: () => void) {
-    if(!localStorage.getItem('token'))
+    if(localStorage.getItem('token') == null)
     {
       this.logined = false;
       return;
     }
-    this.authService.isLoggedIn().subscribe({
+    console.log("token: ", localStorage.getItem("token"))
+    // @ts-ignore
+    this.authService.introspect(localStorage.getItem('token')).subscribe({
       next: (data) => {
-        this.logined = data.result.valid;
-        console.log("logined: ", this.logined);
+        if(!data.result.valid){
+          // @ts-ignore
+          this.authService.introspect(localStorage.getItem('refreshToken')).subscribe({
+            next: (data) => {
+              if(data.result.valid)
+                this.authService.refreshLogin().subscribe({
+                  next: () => {
+                    console.log("refresh token")
+                    this.logined = true;
+                  },
+                  error: (error) =>{
+                    console.log(error)
+              }
+                })
+                // console.log("token refresh: ", localStorage.getItem("token"))
+            },
+            error: (error) =>{
+              console.log(error)
+            }
+          })
+        }
+        else
+          this.logined = true;
+
+        // this.logined = data.result.valid;
+        // console.log("logined: ", this.logined)
+
         callback();
       },
       error: (error) => {

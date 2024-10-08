@@ -5,7 +5,7 @@ import {
   AuthenticationRequest,
   AuthenticationResponse,
   IntrospectRequest,
-  IntrospectResponse
+  IntrospectResponse, RefreshTokenRequest
 } from "../../module/user.module";
 import {Observable, tap} from "rxjs";
 import {ApiResponse} from "../../app.module";
@@ -30,6 +30,22 @@ export class AuthService {
       tap(data => {
         if (data.result.authenticated) {
           localStorage.setItem('token', data.result.token);
+          localStorage.setItem('refreshToken', data.result.refreshToken);
+        }
+      })
+    )
+  }
+
+  refreshLogin(): Observable<ApiResponse<AuthenticationResponse>>{
+    const refreshToken = localStorage.getItem('refreshToken');
+    const request = new RefreshTokenRequest(refreshToken || '');
+    console.log("Request: ", request);
+    return this.http.post<any>(`${this.url}/refresh-token`, request).pipe(
+      tap(data => {
+        console.log("authenticated: ", data.result.authenticated)
+        if (data.result.authenticated) {
+          localStorage.setItem('token', data.result.token);
+          localStorage.setItem('refreshToken', data.result.refreshToken);
         }
       })
     )
@@ -59,15 +75,12 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
     this.router.navigate(['/login']);
   }
 
-  isLoggedIn(): Observable<ApiResponse<IntrospectResponse>>{
-    const token = localStorage.getItem('token');
-    if(!token)
-      this.introspectRequest.token = '';
-    else
-      this.introspectRequest.token = token;
+  introspect(token: string): Observable<ApiResponse<IntrospectResponse>>{
+    this.introspectRequest.token = token;
     return this.http.post<any>(`${this.url}/introspect`, this.introspectRequest);
   }
 }

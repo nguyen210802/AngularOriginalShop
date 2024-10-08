@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Router} from "@angular/router";
 import {Observable} from "rxjs";
 import {ApiResponse, PageResponse} from "../../app.module";
 import {Notifications} from "../../module/user.module";
@@ -9,8 +8,8 @@ import {Notifications} from "../../module/user.module";
   providedIn: 'root'
 })
 export class NotificationService {
-  private url = 'http://localhost:8080/users/notifications';
-  constructor(private http: HttpClient, private router: Router) { }
+  private url = 'http://localhost:8080/notifications';
+  constructor(private http: HttpClient) { }
 
   getHeaders(): HttpHeaders {
     const token = localStorage.getItem('token');

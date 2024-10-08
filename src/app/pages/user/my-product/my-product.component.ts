@@ -36,12 +36,15 @@ export class MyProductComponent {
   }
 
   checkLogined(){
-    this.authService.isLoggedIn().subscribe({
-      next: (data) => {
-        console.log("login: ", data.result.valid)
-        this.logined = data.result.valid;
-      }
-    })
+    if(!localStorage.getItem("token"))
+      return;
+      // @ts-ignore
+      this.authService.introspect(localStorage.getItem("token")).subscribe({
+        next: (data) => {
+          console.log("login: ", data.result.valid)
+          this.logined = data.result.valid;
+        }
+      })
   }
 
   loadProduct() {

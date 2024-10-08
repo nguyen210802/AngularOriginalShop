@@ -30,7 +30,8 @@ export class LoginComponent {
   checkLogined() {
     if(!localStorage.getItem('token'))
       return;
-    this.authService.isLoggedIn().subscribe({
+    // @ts-ignore
+    this.authService.introspect(localStorage.getItem('token')).subscribe({
       next: (data) => {
         if(data.result.valid)
           this.router.navigate(['']);
